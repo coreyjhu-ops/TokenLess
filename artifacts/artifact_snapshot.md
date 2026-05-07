@@ -6,14 +6,20 @@ This file is the concise artifact snapshot for the final project submission. It 
 
 TokenLess turns an underspecified software-development request into a structured prompt that a coding model can use more reliably. The snapshot covers:
 
-- A screenshot of the runnable Streamlit app
+- A screenshot that shows the raw input, mentor flow, optimized output, metrics, and baseline comparison
 - A realistic raw user input
 - The mentor clarification path
 - The final optimized prompt
 - Evaluation metrics against the raw-prompt baseline
 - A known failure case where the system correctly refuses to over-polish an underspecified prompt
 
-## App Screenshot
+## Input/Output Screenshot
+
+![TokenLess input and output artifact screenshot](input-output-screenshot.png)
+
+This is the primary artifact screenshot for the final submission because it shows both the input and the output in one concise view.
+
+## Runnable App Screenshot
 
 ![TokenLess Streamlit app screenshot](app-screenshot.png)
 
