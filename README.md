@@ -263,6 +263,10 @@ The system performs well on prompts with 20+ tokens that contain recoverable gap
 
 This section satisfies the final-project artifact snapshot requirement through a concise sample input/output walkthrough. A standalone version is also available at [`artifacts/artifact_snapshot.md`](artifacts/artifact_snapshot.md), with the longer transcript and metrics in [`artifacts/sample_output.md`](artifacts/sample_output.md).
 
+### App Screenshot
+
+![TokenLess Streamlit app screenshot](artifacts/app-screenshot.png)
+
 ### Sample Input -> Output
 
 **User input (raw):**
