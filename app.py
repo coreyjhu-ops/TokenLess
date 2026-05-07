@@ -16,13 +16,23 @@ import yaml
 from dotenv import load_dotenv
 
 from src.chat.chatbot import TokenLessChatbot
-from src.chat.conversation import ChatSessionState
+from src.chat.conversation import ChatMessage, ChatSessionState, ConversationState
 from src.chat.mentor import TokenLessMentor
 from src.core.providers.google_provider import GoogleProvider
 from src.core.providers.lmstudio_provider import LMStudioProvider
 from src.core.providers.openai_provider import OpenAIProvider
 from src.core.token_estimator import TokenEstimator
-from src.core.types import OptimizationConstraints
+from src.core.types import (
+    EvaluationResult,
+    EvaluationScores,
+    JudgeVote,
+    OptimizationConstraints,
+    OptimizationResult,
+    OptimizationROIReport,
+    PipelineTokenUsage,
+    PlanningResult,
+    TokenStats,
+)
 from src.evaluation.judge_pool import JudgePool
 from src.evaluation.pairwise_battle import PairwiseBattle
 from src.evaluation.self_correction import SelfCorrector
@@ -97,6 +107,11 @@ def main() -> None:
     initialize_session_state()
     render_sidebar()
 
+    state: ChatSessionState = st.session_state["chat_session"]
+    if is_artifact_demo_request():
+        render_artifact_demo_snapshot(state)
+        return
+
     st.markdown(
         f"""
         <section class="tl-header">
@@ -108,7 +123,6 @@ def main() -> None:
         unsafe_allow_html=True,
     )
 
-    state: ChatSessionState = st.session_state["chat_session"]
     render_chat_history(state)
     if state.stage == "done":
         render_final_result(state)
@@ -128,9 +142,188 @@ def initialize_session_state() -> None:
 
     if "demo_mode" not in st.session_state:
         st.session_state["demo_mode"] = False
+    if is_artifact_demo_request():
+        st.session_state["chat_session"] = build_artifact_demo_state()
+        st.session_state["demo_mode"] = True
+        return
     if "chat_session" not in st.session_state:
         mentor = build_mentor(require_roi=not st.session_state["demo_mode"])
         st.session_state["chat_session"] = run_async(mentor.start())
+
+
+def is_artifact_demo_request() -> bool:
+    """Return whether the page should render the built-in artifact snapshot."""
+
+    return st.query_params.get("artifact_demo") == "1"
+
+
+def build_artifact_demo_state() -> ChatSessionState:
+    """Build a deterministic completed session for real app screenshots."""
+
+    raw_prompt = (
+        "I want to build a React dashboard that shows real-time stock prices, "
+        "includes charts, and sends an alert when a stock moves more than 5%."
+    )
+    optimized_prompt = """## Role
+You are a senior React/TypeScript developer. Your expertise: real-time data dashboards and financial UI components.
+
+## Task
+Build a real-time stock price dashboard with Recharts visualization and price-movement alerts.
+
+## Context
+- Framework: React 18 + TypeScript
+- Charting: Recharts
+- Data source: WebSocket connection to a stock price API (endpoint TBD)
+- Alert threshold: plus or minus 5% price movement triggers an in-app notification
+
+## Constraints
+- No user authentication required
+- Use functional components and React hooks only
+- Handle WebSocket reconnection gracefully
+
+## Output Format
+Return the answer using this JSON-compatible structure:
+
+```json
+{
+  "files_to_create_or_modify": [],
+  "implementation_steps": [],
+  "acceptance_criteria": [],
+  "tests": []
+}
+```
+
+## Reminder
+Implement the WebSocket connection and alert logic first; the chart component is secondary."""
+
+    planning_result = PlanningResult(
+        detectedIntent="Build a real-time stock price dashboard in React and TypeScript.",
+        scene="vibe_coding",
+        refinedRequirements=[
+            "Role: senior React/TypeScript developer",
+            "Task: real-time stock dashboard with price alerts",
+            "Stack: React 18, TypeScript, Recharts, WebSocket data",
+            "Constraints: no auth, graceful reconnect, functional components",
+            "Format: JSON-compatible implementation plan with files, steps, acceptance criteria, and tests",
+        ],
+        instructionRefs=["vibe_coding"],
+    )
+    token_ledger = PipelineTokenUsage(
+        intent_analyzer_prompt=420,
+        intent_analyzer_completion=160,
+        semantic_pruner_prompt=310,
+        semantic_pruner_completion=95,
+        rewriter_prompt=680,
+        rewriter_completion=360,
+        judge_pool_prompt=760,
+        judge_pool_completion=260,
+        target_model_prompt=146,
+        target_model_completion=360,
+    )
+    optimization_result = OptimizationResult(
+        optimizedPrompt=optimized_prompt,
+        tokenStats=TokenStats(
+            originalCount=47,
+            optimizedCount=183,
+            reductionRate=-2.8936,
+        ),
+        appliedTechniques=[
+            "intent extraction",
+            "missing-field clarification",
+            "positional anchoring",
+            "professional rewrite",
+            "Markdown + JSON output structure",
+        ],
+        roiReport=OptimizationROIReport(
+            inputTokensSaved=-136,
+            optimizationCostTokens=token_ledger.total_pipeline_tokens,
+            netTokenSavings=-136 - token_ledger.total_pipeline_tokens,
+            roiPositive=False,
+            pipeline_breakdown=token_ledger,
+        ),
+        optimizationSkipped=False,
+    )
+    evaluation_result = EvaluationResult(
+        winner="optimized",
+        scores=EvaluationScores(
+            intentAlignment=9.75,
+            logicCoherence=9.50,
+            concisenessScore=9.00,
+            formatCompliance=10.00,
+            overall=9.55,
+        ),
+        judgeResults=[
+            JudgeVote(
+                model="gpt-4o",
+                winner="tie",
+                reasoning="Both prompts can produce a workable implementation, but the optimized prompt is easier to verify.",
+            ),
+            JudgeVote(
+                model="gemini-2.5-flash",
+                winner="optimized",
+                reasoning="The optimized prompt states stack, data source, reconnect behavior, and acceptance criteria explicitly.",
+            ),
+        ],
+    )
+    final_state = ConversationState(
+        session_id="artifact-demo-final",
+        raw_prompt=raw_prompt,
+        planning_result=planning_result,
+        optimization_result=optimization_result,
+        evaluation_result=evaluation_result,
+        final_prompt=optimized_prompt,
+        supplements={
+            "language": "TypeScript",
+            "framework": "React 18",
+            "charting": "Recharts",
+            "data_source": "WebSocket API, endpoint TBD",
+            "auth": "No authentication needed",
+            "testing": "First version can include acceptance checks before full tests",
+        },
+        status="done",
+        token_ledger=token_ledger,
+    )
+    return ChatSessionState(
+        session_id="artifact-demo",
+        stage="done",
+        raw_prompt=raw_prompt,
+        turn_count=6,
+        supplements=final_state.supplements,
+        planning_result=planning_result,
+        final_state=final_state,
+        messages=[
+            ChatMessage(
+                role="assistant",
+                content=(
+                    "Hi, I am TokenLess. Tell me what project you want an AI coding "
+                    "model to help you build. I will ask focused questions like a prompt mentor."
+                ),
+            ),
+            ChatMessage(role="user", content=raw_prompt),
+            ChatMessage(
+                role="assistant",
+                content=(
+                    "I understand the project as: a real-time stock dashboard.\n\n"
+                    "To make the prompt executable, I clarified five details: TypeScript, "
+                    "Recharts, WebSocket data source, no authentication, and first-version testing expectations."
+                ),
+            ),
+            ChatMessage(
+                role="user",
+                content=(
+                    "Use React 18 with TypeScript and Recharts. Data comes from a WebSocket API. "
+                    "No authentication is needed; tests can be optional for the first version."
+                ),
+            ),
+            ChatMessage(
+                role="assistant",
+                content=(
+                    "Done. The optimized prompt below is structured for a coding model and "
+                    "was selected over the raw baseline by the evaluator."
+                ),
+            ),
+        ],
+    )
 
 
 def render_sidebar() -> None:
@@ -169,6 +362,71 @@ def render_chat_history(state: ChatSessionState) -> None:
     for message in state.messages:
         with st.chat_message(message.role):
             st.markdown(message.content)
+
+
+def render_artifact_demo_snapshot(state: ChatSessionState) -> None:
+    """Render a compact real-app input/output snapshot for final submission."""
+
+    final_prompt = choose_display_prompt(state)
+    final_state = state.final_state
+    score = (
+        f"{final_state.evaluation_result.scores.overall:.2f}"
+        if final_state and final_state.evaluation_result
+        else "-"
+    )
+    winner = (
+        final_state.evaluation_result.winner
+        if final_state and final_state.evaluation_result
+        else "-"
+    )
+    original_tokens = (
+        str(final_state.optimization_result.tokenStats.originalCount)
+        if final_state and final_state.optimization_result
+        else "-"
+    )
+    optimized_tokens = (
+        str(final_state.optimization_result.tokenStats.optimizedCount)
+        if final_state and final_state.optimization_result
+        else "-"
+    )
+    escaped_input = html.escape(state.raw_prompt)
+    escaped_prompt = html.escape(final_prompt)
+    st.markdown(
+        f"""
+        <section class="tl-artifact-shot">
+          <div class="tl-artifact-heading">
+            <p class="tl-kicker">Artifact Screenshot</p>
+            <h2>Input -> Mentor -> Optimized Output</h2>
+            <p>Real TokenLess app rendering for the final project snapshot.</p>
+          </div>
+          <div class="tl-artifact-metrics">
+            <div><span>Raw tokens</span><strong>{original_tokens}</strong></div>
+            <div><span>Optimized tokens</span><strong>{optimized_tokens}</strong></div>
+            <div><span>Quality score</span><strong>{score}</strong></div>
+            <div><span>Winner</span><strong>{winner}</strong></div>
+          </div>
+          <div class="tl-artifact-grid">
+            <article>
+              <h3>Raw Input</h3>
+              <p class="tl-artifact-bubble">{escaped_input}</p>
+              <h3>Mentor Clarification</h3>
+              <ol>
+                <li>Use React 18 with TypeScript.</li>
+                <li>Use Recharts for visualization.</li>
+                <li>Use a WebSocket data source with endpoint TBD.</li>
+                <li>No authentication required.</li>
+                <li>Include acceptance checks before full tests.</li>
+              </ol>
+            </article>
+            <article>
+              <h3>Optimized Output</h3>
+              <pre>{escaped_prompt}</pre>
+            </article>
+          </div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def render_final_result(state: ChatSessionState) -> None:
@@ -495,6 +753,103 @@ def inject_design_system() -> None:
           color: var(--tl-text-secondary);
           font: 400 20px/1.6 var(--tl-font-body);
           letter-spacing: normal;
+        }
+        .tl-artifact-shot {
+          margin: 0 0 32px;
+          padding: 24px;
+          border: 1px solid var(--tl-border-default);
+          border-radius: var(--tl-radius-standard);
+          background: var(--tl-bg-section-cool);
+          box-shadow: var(--tl-shadow-card);
+        }
+        .tl-artifact-heading {
+          margin-bottom: 18px;
+        }
+        .tl-artifact-heading h2 {
+          margin: 0 0 6px;
+          font-family: var(--tl-font-heading);
+          font-size: 32px;
+          line-height: 1.1;
+          font-weight: 500;
+        }
+        .tl-artifact-heading p:last-child {
+          margin: 0;
+          color: var(--tl-text-secondary);
+          font: 400 15px/1.4 var(--tl-font-body);
+        }
+        .tl-artifact-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+          gap: 16px;
+        }
+        .tl-artifact-grid article,
+        .tl-artifact-metrics div {
+          border: 1px solid var(--tl-border-default);
+          border-radius: var(--tl-radius-standard);
+          background: var(--tl-bg-card);
+          box-shadow: var(--tl-shadow-card);
+        }
+        .tl-artifact-grid article {
+          padding: 18px;
+        }
+        .tl-artifact-grid h3 {
+          margin: 0 0 10px;
+          font-family: var(--tl-font-body);
+          font-size: 16px;
+          line-height: 1.3;
+          font-weight: 700;
+        }
+        .tl-artifact-bubble {
+          margin: 0 0 16px;
+          padding: 12px;
+          border: 1px solid #b8d9ff;
+          border-radius: var(--tl-radius-standard);
+          background: #f7fbff;
+          color: var(--tl-text-primary);
+          font: 400 14px/1.45 var(--tl-font-body);
+        }
+        .tl-artifact-grid ol {
+          margin: 0;
+          padding-left: 20px;
+          color: var(--tl-text-secondary);
+          font: 400 14px/1.45 var(--tl-font-body);
+        }
+        .tl-artifact-grid pre {
+          max-height: 430px;
+          margin: 0;
+          overflow: auto;
+          white-space: pre-wrap;
+          border-radius: var(--tl-radius-standard);
+          background: #111827;
+          color: #f9fafb;
+          padding: 14px;
+          font: 400 12px/1.45 var(--tl-font-mono);
+        }
+        .tl-artifact-metrics {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 12px;
+          margin-top: 16px;
+        }
+        .tl-artifact-metrics div {
+          min-height: 80px;
+          padding: 14px;
+        }
+        .tl-artifact-metrics span {
+          display: block;
+          color: var(--tl-text-secondary);
+          font: 600 11px/1.2 var(--tl-font-body);
+          text-transform: uppercase;
+        }
+        .tl-artifact-metrics strong {
+          display: block;
+          margin-top: 8px;
+          color: var(--tl-text-primary);
+          font-family: var(--tl-font-heading);
+          font-size: 26px;
+          line-height: 1.1;
+          font-weight: 500;
+          text-transform: capitalize;
         }
         .tl-muted {
           margin: 0 0 12px;

@@ -267,7 +267,7 @@ This section satisfies the final-project artifact snapshot requirement through a
 
 ![TokenLess input and output artifact screenshot](artifacts/input-output-screenshot.png)
 
-This screenshot shows the raw user input, the mentor clarification questions, the optimized output prompt, evaluation metrics, and baseline comparison in one view. A plain runnable-app screenshot is also included at [`artifacts/app-screenshot.png`](artifacts/app-screenshot.png).
+This is a real Streamlit app screenshot captured from a deterministic artifact-demo run. It shows the raw user input, the mentor clarification questions, and the optimized output prompt in one view. The metrics and baseline comparison are documented below and in the standalone artifact snapshot. A plain runnable-app screenshot is also included at [`artifacts/app-screenshot.png`](artifacts/app-screenshot.png).
 
 ### Sample Input -> Output
 
