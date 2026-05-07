@@ -1,0 +1,579 @@
+{
+  "helper_version": "2026-04-09-v5",
+  "run_id": "20260409_163640",
+  "saved_at": "2026-04-09T16:53:17",
+  "results": [
+    {
+      "name": "Qwen3.5-4B",
+      "lmstudio_id": "https://huggingface.co/lmstudio-community/Qwen3.5-4B-GGUF",
+      "actual_model_id": "qwen3.5-4b",
+      "params": "4B (5B actual)",
+      "notes": "English text,Alibaba English text,English text DeltaNet+Attention",
+      "available": true,
+      "health": {
+        "available": true,
+        "latency_ms": 5.69,
+        "history": [
+          {
+            "available": true,
+            "latency_ms": 5.69
+          }
+        ]
+      },
+      "prompt_results": [
+        {
+          "prompt_name": "short_coding",
+          "prompt_length": "short",
+          "prompt": "Write a Python function to check if a number is prime.",
+          "response_text": "Here's an efficient Python function to check if a number is prime:\n\n```python\ndef is_prime(n):\n    \"\"\"\n    Check if a number is prime.\n\n    A prime number is a natural number greater than 1 that has no positive divisors \n    other than 1 and itself.\n\n    Parameters:\n        n (int): The number to check.\n\n    Returns:\n        bool: True if the number is prime, False otherwise.\n    \"\"\"\n    # Handle edge cases\n    if n <= 1:\n        return False\n    if n <= 3:\n        return True\n    if n % 2 == 0 or n % 3 == 0:\n\nThe user wants me to write a Python function to check if a number is prime. A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\n\nI should consider:\n1. Basic edge cases (numbers less than 2, even numbers)\n2. Efficient algorithm (checking up to sqrt(n) instead of n-1)\n3. Handle negative numbers and zero properly\n\nLet me write a clear, well-documented function with examples.",
+          "response_preview": "Here's an efficient Python function to check if a number is prime: ```python def is_prime(n): \"\"\" Check if a number is prime. A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself. Parameters: n (int): The number to check. Returns: bool: True if the ...",
+          "response_non_empty": true,
+          "prompt_tokens": 22,
+          "completion_tokens": 256,
+          "latency_ms": 12073.02,
+          "tokens_per_second": 21.2,
+          "error": ""
+        },
+        {
+          "prompt_name": "short_translation",
+          "prompt_length": "short",
+          "prompt": "Translate to Chinese: 'The quick brown fox jumps over the lazy dog.'",
+          "response_text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Source text: \"The quick brown fox jumps over the lazy dog.\"\n    *   Target language: Chinese (Chinese).\n    *   Task: Translate.\n\n2.  **Identify the Nature of the Text:**\n    *   This is a famous pangram (a sentence containing every letter of the alphabet at least once).\n    *   It's often used for typing practice, font testing, etc.\n    *   There isn't just one \"correct\" translation; it depends on whether accuracy to meaning or phonetic/structural similarity matters. However, usually, a literal but readable translation is preferred unless specified otherwise.\n\n3.  **Drafting Translations:**\n    *   *Literal:* English text. (Zhè zhī jǐngmì de zān sè lín hù xiào jià le guàn gǒu.) -> Wait, \"brown\" is English text,\"fox\" is English text,\"jumps over\" is English text/English text,\"lazy dog\" is English text.\n    *   *Refining:* English text",
+          "response_preview": "Thinking Process: 1. **Analyze the Request:** * Source text: \"The quick brown fox jumps over the lazy dog.\" * Target language: Chinese (Chinese). * Task: Translate. 2. **Identify the Nature of the Text:** * This is a famous pangram (a sentence containing every letter of the alphabet at least once). ...",
+          "response_non_empty": true,
+          "prompt_tokens": 25,
+          "completion_tokens": 256,
+          "latency_ms": 11325.75,
+          "tokens_per_second": 22.6,
+          "error": ""
+        },
+        {
+          "prompt_name": "short_factual",
+          "prompt_length": "short",
+          "prompt": "What are the three laws of thermodynamics? Answer in one sentence each.",
+          "response_text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Topic: Three laws of thermodynamics.\n    *   Constraint: Answer in one sentence each (total of three sentences).\n\n2.  **Identify the Content:**\n    *   First Law: Conservation of energy (Energy cannot be created or destroyed, only transformed).\n    *   Second Law: Entropy increases (Heat flows from hot to cold; disorder increases in isolated systems).\n    *   Third Law: Absolute zero (Entropy approaches a constant value as temperature approaches absolute zero).\n\n3.  **Draft Sentences:**\n    *   First Law: The first law of thermodynamics states that energy cannot be created or destroyed, only transferred or transformed from one form to another.\n    *   Second Law: The second law of thermodynamics asserts that the total entropy of an isolated system can never decrease over time, often described as heat flowing spontaneously from hot to cold objects.\n    *   Third Law: The third law of thermodynamics states that as the temperature of a system approaches absolute zero, its entropy approaches a constant minimum value.\n\n4.  **Review and Refine (Constraint Check):**\n    *   Sentence 1: \"The",
+          "response_preview": "Thinking Process: 1. **Analyze the Request:** * Topic: Three laws of thermodynamics. * Constraint: Answer in one sentence each (total of three sentences). 2. **Identify the Content:** * First Law: Conservation of energy (Energy cannot be created or destroyed, only transformed). * Second Law: Entropy...",
+          "response_non_empty": true,
+          "prompt_tokens": 25,
+          "completion_tokens": 256,
+          "latency_ms": 11609.6,
+          "tokens_per_second": 22.05,
+          "error": ""
+        },
+        {
+          "prompt_name": "medium_coding",
+          "prompt_length": "medium",
+          "prompt": "Write a Python class called `CSVValidator` with methods: `__init__(self, filepath: str)` that reads a CSV file, `validate_headers(self, expected: list[str]) -> bool` that checks column names, `find_missing_values(self) -> dict[str, int]` that returns column name to missing count mapping, and `summary(self) -> str` that returns a human-readable validation report. Include type hints, docstrings, and handle FileNotFoundError.",
+          "response_text": "Here's a thinking process that leads to the suggested Python class:\n\n1.  **Understand the Goal:** The user wants a Python class named `CSVValidator`. It needs to read a CSV file from a given path, validate headers against an expected list, count missing values per column, and generate a summary report. It must include type hints, docstrings, handle `FileNotFoundError`, and follow best practices (PEP 8 style).\n\n2.  **Analyze the Requirements:**\n    *   Class Name: `CSVValidator`.\n    *   Method 1: `__init__(self, filepath: str)`: Reads CSV data into memory or a structure suitable for checking later. Needs to handle `FileNotFoundError`.\n    *   Method 2: `validate_headers(self, expected: list[str]) -> bool`: Checks if the actual headers match the expected ones (order matters usually in validation contexts, but sometimes sets are used. I'll assume order matters for strict validation unless specified otherwise, but typically \"check column names\" implies checking existence and potentially order). Let's make it check that all expected headers exist *and* no unexpected headers exist to be thorough, or just a subset match? Usually, `validate_headers` implies the structure is correct. I will implement it such that `actual_headers == expected`.\n    *   Method 3: `find_missing_values(self) -> dict[str, int]`: Returns a dictionary mapping column names to the count of missing values (e.g., empty strings or None).\n    *   Method 4: `summary(self) -> str`: Generates a human-readable string based on validation results.\n    *   Extras: Type hints (`typing` module), Docstrings, Error Handling (`FileNotFoundError`).\n\n3.  **Determine Dependencies:**\n    *   To read CSVs efficiently and handle headers/missing values, the `csv` module is standard library. Using `pandas` would be easier but might be overkill or introduce external dependencies (unless I assume they are available). The prompt asks for a Python class, implying standard library usage is preferred unless specified otherwise. I will use the built-in `csv` module to ensure it runs without installing packages like pandas.\n\n4.  **Drafting the Class Structure:**\n\n    ```python\n    import csv\n    from typing import List, Dict, Optional\n\n    class CSVValidator:\n        def __init__(self, filepath: str):\n            # Read file here",
+          "response_preview": "Here's a thinking process that leads to the suggested Python class: 1. **Understand the Goal:** The user wants a Python class named `CSVValidator`. It needs to read a CSV file from a given path, validate headers against an expected list, count missing values per column, and generate a summary report...",
+          "response_non_empty": true,
+          "prompt_tokens": 105,
+          "completion_tokens": 512,
+          "latency_ms": 23743.96,
+          "tokens_per_second": 21.56,
+          "error": ""
+        },
+        {
+          "prompt_name": "medium_analysis",
+          "prompt_length": "medium",
+          "prompt": "Compare the attention mechanisms in the original Transformer (Vaswani et al., 2017) with Flash Attention (Dao et al., 2022). Discuss: (1) computational complexity differences, (2) memory usage patterns, (3) practical impact on training throughput for sequences longer than 4096 tokens, and (4) under what conditions the original attention might still be preferred.",
+          "response_text": "Here's a thinking process that leads to the comparison between Transformer and Flash Attention:\n\n1.  **Deconstruct the Request:**\n    *   **Subjects:** Original Transformer (Vaswani et al., 2017) vs. Flash Attention (Dao et al., 2022).\n    *   **Key Aspects to Discuss:**\n        1.  Computational Complexity Differences.\n        2.  Memory Usage Patterns.\n        3.  Practical Impact on Training Throughput (>4096 tokens).\n        4.  Conditions where Original Attention might still be preferred.\n\n2.  **Analyze Subject 1: Original Transformer (Vaswani et al., 2017):**\n    *   *Mechanism:* Self-attention via matrix multiplication ($QK^T$) followed by softmax, then $O$.\n    *   *Math:* $Attention(Q, K, V) = \\text{softmax}(\\frac{QK^T}{\\sqrt{d}})V$.\n    *   *Complexity:* $O(N^2)$ for sequence length $N$ (quadratic).\n    *   *Memory:* Requires storing the full attention matrix ($N \\times N$) or at least intermediate results. In standard implementations, this is often a bottleneck due to cache misses and memory bandwidth limits.\n\n3.  **Analyze Subject 2: Flash Attention (Dao et al., 2022):**\n    *   *Mechanism:* Optimized self-attention. Key insight: The softmax operation can be computed in-place without storing the full $N \\times N$ matrix if processed in tiles/blocks. It uses a \"tiling\" strategy to fit into L2 cache.\n    *   *Math:* Same mathematical definition, but implementation is different (tiled computation).\n    *   *Complexity:* Still theoretically $O(N^2)$ for the operation count, but constant factors are drastically reduced due to memory access patterns.\n    *   *Memory:* No need to store the full attention matrix in RAM. It streams data through L1/L2 cache.\n\n4.  **Drafting Section (1): Computational Complexity:**\n    *   *Original:* $O(N^2)$ time and space complexity. The constant factor is high because of random memory access patterns (loading Q, K, V from global memory).\n    *",
+          "response_preview": "Here's a thinking process that leads to the comparison between Transformer and Flash Attention: 1. **Deconstruct the Request:** * **Subjects:** Original Transformer (Vaswani et al., 2017) vs. Flash Attention (Dao et al., 2022). * **Key Aspects to Discuss:** 1. Computational Complexity Differences. 2...",
+          "response_non_empty": true,
+          "prompt_tokens": 96,
+          "completion_tokens": 512,
+          "latency_ms": 25187.64,
+          "tokens_per_second": 20.33,
+          "error": ""
+        },
+        {
+          "prompt_name": "medium_creative",
+          "prompt_length": "medium",
+          "prompt": "You are a senior product manager at a startup. Write a product brief (200 words max) for a new feature: an AI-powered 'Prompt Optimizer' that takes a user's rough prompt, analyzes it for redundancy and ambiguity, and outputs a compressed version that achieves better results with fewer tokens. Include: problem statement, proposed solution, key metrics, and one potential risk.",
+          "response_text": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** Senior Product Manager at a startup.\n    *   **Task:** Write a product brief for a new feature.\n    *   **Feature:** AI-powered 'Prompt Optimizer' (takes rough prompt -> analyzes redundancy/ambiguity -> outputs compressed version).\n    *   **Constraints:** Max 200 words.\n    *   **Required Elements:** Problem statement, proposed solution, key metrics, one potential risk.\n\n2.  **Drafting - Section by Section:**\n\n    *   *Problem Statement:* Users waste tokens on verbose/ambiguous prompts, leading to poor LLM output and higher costs.\n    *   *Proposed Solution:* \"Prompt Optimizer\" AI tool that refines user input into concise, high-performing queries without losing intent.\n    *   *Key Metrics:* Token reduction %, User satisfaction (CSAT), Output quality score.\n    *   *Risk:* Over-optimization stripping nuance or context critical for complex tasks.\n\n3.  **Drafting - First Pass (Mental or Scratchpad):**\n    Problem: Users generate verbose prompts, wasting tokens and getting bad results from LLMs. This hurts cost and quality. Solution: Launch Prompt Optimizer. It analyzes input, finds redundancy, and outputs a compressed version that works better. Metrics: 30% token reduction, 20% higher CSAT, improved accuracy scores. Risk: AI might remove too much context, making the prompt useless for creative or complex tasks.\n\n4.  **Refining and Condensing (Targeting < 200 words):**\n    *   Need to sound professional (Senior PM tone).\n    *   Ensure all constraints are met.\n\n5.  **Drafting - Second Pass:**\n    **Product Brief: Prompt Optimizer**\n\n    **Problem Statement:** Users waste significant tokens on verbose, ambiguous prompts, leading to suboptimal LLM outputs and inflated API costs. This inefficiency erodes user trust and increases operational expenses for our enterprise clients.\n\n    **Proposed Solution:** Introduce an AI-powered \"Prompt Optimizer\" sidebar. It analyzes raw input, identifies redundancy and ambiguity, and generates a compressed version that preserves intent while maximizing model performance. Users can toggle between original and optimized views.\n\n    **Key Metrics:**\n    *   Token Reduction: Target 30% average savings per query.",
+          "response_preview": "Thinking Process: 1. **Analyze the Request:** * **Role:** Senior Product Manager at a startup. * **Task:** Write a product brief for a new feature. * **Feature:** AI-powered 'Prompt Optimizer' (takes rough prompt -> analyzes redundancy/ambiguity -> outputs compressed version). * **Constraints:** Max...",
+          "response_non_empty": true,
+          "prompt_tokens": 88,
+          "completion_tokens": 512,
+          "latency_ms": 31373.33,
+          "tokens_per_second": 16.32,
+          "error": ""
+        },
+        {
+          "prompt_name": "long_coding",
+          "prompt_length": "long",
+          "prompt": "Design and implement a Python module called `token_budget_manager.py` with the following specifications:\n\n1. Class `TokenBudget`:\n   - `__init__(self, total_budget: int, model: str = 'gpt-4o')`\n   - `allocate(self, section: str, content: str) -> AllocationResult` - allocates tokens from the budget for a named section\n   - `remaining(self) -> int` - returns remaining token budget\n   - `report(self) -> BudgetReport` - returns a structured report of all allocations\n   - `optimize(self, target_reduction: float = 0.2) -> list[Suggestion]` - suggests which sections to compress\n\n2. Class `AllocationResult(BaseModel)`: section, token_count, budget_remaining, over_budget(bool)\n3. Class `BudgetReport(BaseModel)`: total_budget, used, remaining, sections(list), utilization_percent\n4. Class `Suggestion(BaseModel)`: section, current_tokens, suggested_tokens, compression_strategy\n\nRequirements:\n- Use tiktoken for token counting\n- Raise `BudgetExceededError` when allocation exceeds remaining budget (allow force=True to override)\n- Thread-safe with a simple lock\n- Include comprehensive docstrings and type hints\n- The `optimize` method should prioritize sections with the highest token count for compression suggestions",
+          "response_text": "Here's a thinking process that leads to the suggested implementation:\n\n1.  **Understand the Goal:** The user wants a Python module named `token_budget_manager.py`. It needs to manage token budgets (likely for LLM APIs like OpenAI), track allocations, and offer optimization suggestions. Key requirements include specific classes (`TokenBudget`, `AllocationResult`, `BudgetReport`, `Suggestion`), usage of `tiktoken`, thread safety, error handling (`BudgetExceededError`), and type hints/docstrings.\n\n2.  **Analyze the Classes & Methods:**\n\n    *   **`TokenBudget`:**\n        *   `__init__`: Needs total budget (int) and model name (str).\n        *   `allocate`: Takes section name and content string. Returns an `AllocationResult`. Must check against remaining budget. Uses `tiktoken` to count tokens in content based on the model.\n        *   `remaining`: Returns int.\n        *   `report`: Returns a `BudgetReport`. Needs to track history of allocations.\n        *   `optimize`: Takes target reduction (float). Returns list of `Suggestion`. Logic: Identify sections, calculate potential savings, prioritize high token counts.\n    *   **`AllocationResult`, `BudgetReport`, `Suggestion`:** These are data classes using Pydantic (`BaseModel`). They need to be imported or defined within the module. Since they use `BaseModel`, I should import Pydantic.\n\n3.  **Analyze Dependencies & Constraints:**\n    *   **`tiktoken`:** Used for token counting. Need to ensure it's installed (assumed in environment).\n    *   **Pydantic (`BaseModel`):** For data classes.\n    *   **Thread Safety:** A `threading.Lock` is required around budget updates.\n    *   **Error Handling:** Custom exception `BudgetExceededError`.\n    *   **Type Hints:** Comprehensive use of `typing` module (List, Dict, Optional).\n\n4.  **Drafting the Code Structure:**\n\n    ```python\n    # Imports\n    import tiktoken\n    from typing import List, Optional\n    from threading import Lock\n    from datetime import datetime\n    from pydantic import BaseModel\n\n    # Custom Exception\n    class BudgetExceededError(Exception): ...\n\n    # Data Models (Pydantic)\n    class AllocationResult(BaseModel): ...\n    class BudgetReport(BaseModel): ...\n    class Suggestion(BaseModel): ...\n\n    # Main Class\n    class TokenBudget: ...\n    ```\n\n5.  **Refining Logic & Edge Cases:**\n\n    *   *Token Counting:* `tiktoken.encoding_for_model(model_name)`. Need to handle cases where the model isn't supported by tiktoken (though usually, it's good practice to catch that). For this exercise, I'll assume standard models or use a fallback encoding if needed.\n    *   *Allocation Logic:*\n        1. Calculate tokens for content.\n        2. Check `remaining` vs `tokens`.\n        3. If over budget and not `force=True`, raise error.\n        4. Update internal state (used + allocated).\n        5. Store allocation history.\n    *   *Optimization Logic:*\n        1. Iterate through sections in the report.\n        2. Sort by token count descending.\n        3. Calculate how much can be cut to meet `target_reduction`.\n        4. Suggest compression strategies (e.g., \"summarize\", \"remove metadata\").\n    *   *Thread Safety:* Wrap all state-modifying operations (`allocate`, `remaining` calculation, report generation) in a lock context manager or method-level locking.\n\n6.  **Writing the Code (Mental or Scratchpad):**\n\n    *   *Imports:* Need `pydantic`.\n    *   *Exception:* Define it at module level.\n    *   *TokenBudget Init:* Store `total_budget`, `used_tokens` (int), `model_name`, `allocations_history` (list of dicts/objects). Initialize lock.\n    *   *allocate:*\n        ```python\n        encoding = tiktoken.get_encoding(\"cl100k_base\") # Or specific model if available, but usually cl100k_base is safer for generic counting unless we have a custom encoder. Actually, tiktoken.encoding_for_model(model) is better.\n        tokens = len(encoding.encode(content))\n        ```\n    *   *Optimize:* This needs to be smart. If I reduce by 20%, which sections should go? Usually, the ones with the most tokens contribute most to the total usage. So sort `allocations_history` by token count descending.\n\n7.  **Addressing Specific Requirements:**\n    *   `AllocationResult(BaseModel)",
+          "response_preview": "Here's a thinking process that leads to the suggested implementation: 1. **Understand the Goal:** The user wants a Python module named `token_budget_manager.py`. It needs to manage token budgets (likely for LLM APIs like OpenAI), track allocations, and offer optimization suggestions. Key requirement...",
+          "response_non_empty": true,
+          "prompt_tokens": 289,
+          "completion_tokens": 1024,
+          "latency_ms": 86218.02,
+          "tokens_per_second": 11.88,
+          "error": ""
+        },
+        {
+          "prompt_name": "long_analysis",
+          "prompt_length": "long",
+          "prompt": "You are an AI researcher writing a literature review section. Analyze the following research question and provide a structured response:\n\nResearch Question: How do different prompt compression techniques affect the quality-cost tradeoff in LLM inference?\n\nCover these areas:\n1. Token-level pruning: techniques that remove or replace individual tokens while preserving semantic meaning. Discuss approaches like LLMLingua, Selective Context, and PCRL. What are their typical compression ratios and quality retention rates?\n2. Semantic compression: methods that rephrase content more concisely. How do they compare to token-level approaches in terms of meaning preservation?\n3. Structural optimization: techniques that reorganize prompt structure (positional anchoring, section reordering) to improve attention efficiency without reducing token count.\n4. Hybrid approaches: systems that combine multiple techniques. What are the theoretical and practical advantages?\n\nFor each area, discuss: (a) key papers and methods, (b) reported compression rates, (c) quality impact metrics, (d) computational overhead of the compression itself.\n\nConclude with: what gaps remain in the literature, and what would a practical system need to address?",
+          "response_text": "Here's a thinking process that leads to the suggested response:\n\n1.  **Analyze the Request:**\n    *   **Role:** AI Researcher writing a literature review section.\n    *   **Task:** Analyze a specific research question (\"How do different prompt compression techniques affect the quality-cost tradeoff in LLM inference?\") and provide a structured response.\n    *   **Key Areas to Cover:** Token-level pruning, Semantic compression, Structural optimization, Hybrid approaches.\n    *   **Required Elements per Area:** Key papers/methods, Compression rates, Quality impact metrics, Computational overhead of compression itself.\n    *   **Conclusion:** Identify gaps and practical system requirements.\n    *   **Tone:** Academic, analytical, structured (like a literature review).\n\n2.  **Deconstruct the Research Question:**\n    *   The core tension is \"Quality\" vs. \"Cost\". Cost in LLM inference usually means compute (tokens processed) or latency. Quality means downstream task performance (accuracy, coherence, instruction following).\n    *   Prompt compression aims to reduce cost without sacrificing quality.\n\n3.  **Drafting - Section by Section:**\n\n    *   **Introduction:** Briefly set the stage. Contextualize prompt engineering and inference costs. Define the scope of the review.\n\n    *   **Area 1: Token-level Pruning:**\n        *   *Concept:* Removing specific tokens (stop words, padding) or replacing them with placeholders/shorter representations.\n        *   *Key Papers:* LLMLingua (Shen et al.), Selective Context (Zhang et al.), PCRL (Liu et al.).\n        *   *Compression Rates:* Usually high (50-80% reduction possible in some cases, but often lower for general text). Need to be specific where data exists.\n        *   *Quality Metrics:* Perplexity (PPL), downstream task accuracy (e.g., MMLU, SQuAD).\n        *   *Overhead:* The compression step itself requires a model pass or heuristic calculation.\n\n    *   **Area 2: Semantic Compression:**\n        *   *Concept:* Summarization/Paraphrasing to keep meaning but reduce length.\n        *   *Key Papers:* PromptSum (maybe?), LLM-based summarization for prompts, Distillation approaches.\n        *   *Comparison:* Better at preserving high-level intent than token pruning which might chop off context. Token pruning is often \"structural,\" semantic is \"content.\"\n        *   *Metrics:* Semantic similarity (BERTScore), Task accuracy.\n        *   *Overhead:* Requires a separate generation step or fine-tuned model, higher compute cost to compress before inference.\n\n    *   **Area 3: Structural Optimization:**\n        *   *Concept:* Reordering, anchoring, removing redundancy without changing token count (or minimal change). Focus on attention mechanisms.\n        *   *Key Papers:* Prompt Tuning variations, Positional Anchoring (e.g., in some instruction tuning papers), Attention-based pruning (like FlashAttention context optimization). Let's focus on things like \"Prompt Reordering\" or \"Instruction Compression via Structure.\" Actually, a specific paper might be \"Structure-Aware Prompt Optimization\" or similar. I need to be careful not to hallucinate specific non-existent papers but refer to established concepts in the field like *Prompt Tuning* (Liu et al.) and *Attention-based Pruning*.\n        *   *Correction:* Structural optimization often refers to things like *Prompt Reordering*, *Instruction Distillation*, or using *Positional Encodings* to reduce context window needs. Let's focus on techniques that optimize the *attention map* efficiency, such as removing redundant instructions or reordering for better attention flow (e.g., placing critical info first).\n        *   *Metrics:* Latency reduction (due to fewer tokens), Attention head utilization.\n\n    *   **Area 4: Hybrid Approaches:**\n        *   *Concept:* Combining pruning + summarization + structure.\n        *   *Key Papers:* Recent works on \"Prompt Optimization\" pipelines (e.g., combining LLM-based compression with rule-based filtering).\n        *   *Advantages:* Synergy. Redundant tokens removed, critical semantic info kept, structure optimized for attention.\n        *   *Metrics:* End-to-end latency vs. accuracy tradeoff curves.\n\n    *   **Conclusion (Gaps & Future Work):**\n        *   *Gaps:* Dynamic compression (adapting to query type), Cost of the compressor itself (is it cheaper than saving inference?), Long-context handling, Multi-modal prompts.\n        *   *System Needs:* Modular pipelines, automated selection based on task type, real-time evaluation.\n\n4.  **Refining and Fact-Checking (Self-Correction):**\n    *   *Constraint Check:* I need to ensure the specific",
+          "response_preview": "Here's a thinking process that leads to the suggested response: 1. **Analyze the Request:** * **Role:** AI Researcher writing a literature review section. * **Task:** Analyze a specific research question (\"How do different prompt compression techniques affect the quality-cost tradeoff in LLM inferen...",
+          "response_non_empty": true,
+          "prompt_tokens": 248,
+          "completion_tokens": 1024,
+          "latency_ms": 82461.63,
+          "tokens_per_second": 12.42,
+          "error": ""
+        }
+      ],
+      "structured": {
+        "success": true,
+        "content": {
+          "intent": "prompt optimization",
+          "keywords": [
+            "faster",
+            "shrink",
+            "prompts",
+            "requirements"
+          ],
+          "complexity": "medium"
+        },
+        "error": ""
+      },
+      "latency_runs": [
+        {
+          "run": 1,
+          "latency_ms": 7403.54,
+          "completion_tokens": 96,
+          "tokens_per_second": 12.97,
+          "error": ""
+        },
+        {
+          "run": 2,
+          "latency_ms": 7680.73,
+          "completion_tokens": 96,
+          "tokens_per_second": 12.5,
+          "error": ""
+        },
+        {
+          "run": 3,
+          "latency_ms": 7733.24,
+          "completion_tokens": 96,
+          "tokens_per_second": 12.41,
+          "error": ""
+        },
+        {
+          "run": 4,
+          "latency_ms": 7699.72,
+          "completion_tokens": 96,
+          "tokens_per_second": 12.47,
+          "error": ""
+        },
+        {
+          "run": 5,
+          "latency_ms": 7788.25,
+          "completion_tokens": 96,
+          "tokens_per_second": 12.33,
+          "error": ""
+        }
+      ],
+      "avg_latency_ms": 7661.1,
+      "std_latency_ms": 133.85,
+      "avg_tokens_per_second": 12.54,
+      "response_non_empty_rate": 1.0,
+      "structured_success_rate": 1.0,
+      "load_error": "",
+      "precheck": {
+        "ready": true,
+        "load_confirmed": true,
+        "health_available": true,
+        "smoke_test_success": true,
+        "health_latency_ms": 169.78,
+        "smoke_test_preview": "Thinking Process: 1. **Analyze the Request:** The user is asking me to reply wit...",
+        "smoke_test_completion_tokens": 64,
+        "error": ""
+      }
+    },
+    {
+      "name": "Gemma-4-E4B-IT",
+      "lmstudio_id": "https://huggingface.co/lmstudio-community/gemma-4-E4B-it-GGUF",
+      "actual_model_id": "gemma-4-e4b-it",
+      "params": "4B effective",
+      "notes": "Google English text,English text,English text,128K English text",
+      "available": true,
+      "health": {
+        "available": true,
+        "latency_ms": 3.82,
+        "history": [
+          {
+            "available": true,
+            "latency_ms": 3.82
+          }
+        ]
+      },
+      "prompt_results": [
+        {
+          "prompt_name": "short_coding",
+          "prompt_length": "short",
+          "prompt": "Write a Python function to check if a number is prime.",
+          "response_text": "Here are a few ways to write a Python function to check if a number is prime, ranging from the basic approach to a more optimized one.\n\n### 1. Basic and Clear Approach (Good for beginners)\n\nThis method checks divisibility by every integer from 2 up to $n-1$.\n\n```python\ndef is_prime_basic(n):\n    \"\"\"\n    Checks if a number 'n' is prime using basic trial division.\n    A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\n    \"\"\"\n    # Handle base cases: numbers less than or equal to 1 are not prime\n    if n <= 1:\n        return False\n    \n    # Check for divisibility from 2 up to n-1\n    for i in range(2, n):\n        if n % i == 0:\n            # Found a divisor, so it's not prime\n            return False\n            \n    # If the loop completes without finding any divisors, it is prime\n    return True\n\n# --- Testing the function ---\nprint(f\"7 is prime: {is_prime_basic(7)}\")     #",
+          "response_preview": "Here are a few ways to write a Python function to check if a number is prime, ranging from the basic approach to a more optimized one. ### 1. Basic and Clear Approach (Good for beginners) This method checks divisibility by every integer from 2 up to $n-1$. ```python def is_prime_basic(n): \"\"\" Checks...",
+          "response_non_empty": true,
+          "prompt_tokens": 21,
+          "completion_tokens": 256,
+          "latency_ms": 18607.1,
+          "tokens_per_second": 13.76,
+          "error": ""
+        },
+        {
+          "prompt_name": "short_translation",
+          "prompt_length": "short",
+          "prompt": "Translate to Chinese: 'The quick brown fox jumps over the lazy dog.'",
+          "response_text": "There are a few ways to translate this, depending on whether you want a literal translation or a more natural-sounding one that conveys the meaning.\n\n**1. Literal Translation (Focusing on the words):**\n\n> **English text.**\n> *Mǐnjié de zōngsè húli tiàoguò lǎn gǒu.*\n\n*   **English text (mǐnjié de):** Quick/Agile\n*   **English text (zōngsè):** Brown\n*   **English text (húli):** Fox\n*   **English text (tiàoguò):** Jumps over\n*   **English text (lǎn gǒu):** Lazy dog\n\n**2. Common/Natural Translation (Often used when translating pangrams, though the concept is more important than the exact words):**\n\nIf you are translating this because it's a famous **pangram** (a sentence containing every letter of the alphabet), Chinese doesn't have an equivalent \"every character\" sentence that is as universally recognized. In such cases, translators often just use the literal translation above or sometimes omit the pangram aspect entirely if context allows.",
+          "response_preview": "There are a few ways to translate this, depending on whether you want a literal translation or a more natural-sounding one that conveys the meaning. **1. Literal Translation (Focusing on the words):** > **English text.** > *Mǐnjié de zōngsè húli tiàoguò lǎn gǒu.* * **English text (mǐnjié de):** Quick/Agile * ...",
+          "response_non_empty": true,
+          "prompt_tokens": 24,
+          "completion_tokens": 256,
+          "latency_ms": 18477.76,
+          "tokens_per_second": 13.85,
+          "error": ""
+        },
+        {
+          "prompt_name": "short_factual",
+          "prompt_length": "short",
+          "prompt": "What are the three laws of thermodynamics? Answer in one sentence each.",
+          "response_text": "The first law states that energy cannot be created or destroyed, only transferred or changed in form. The second law dictates that the total entropy of an isolated system can only increase over time. The third law asserts that the entropy of a perfect crystal approaches zero as the temperature approaches absolute zero.",
+          "response_preview": "The first law states that energy cannot be created or destroyed, only transferred or changed in form. The second law dictates that the total entropy of an isolated system can only increase over time. The third law asserts that the entropy of a perfect crystal approaches zero as the temperature appro...",
+          "response_non_empty": true,
+          "prompt_tokens": 23,
+          "completion_tokens": 58,
+          "latency_ms": 4547.62,
+          "tokens_per_second": 12.75,
+          "error": ""
+        },
+        {
+          "prompt_name": "medium_coding",
+          "prompt_length": "medium",
+          "prompt": "Write a Python class called `CSVValidator` with methods: `__init__(self, filepath: str)` that reads a CSV file, `validate_headers(self, expected: list[str]) -> bool` that checks column names, `find_missing_values(self) -> dict[str, int]` that returns column name to missing count mapping, and `summary(self) -> str` that returns a human-readable validation report. Include type hints, docstrings, and handle FileNotFoundError.",
+          "response_text": "```python\nimport csv\nfrom typing import List, Dict\n\nclass CSVValidator:\n    \"\"\"\n    A class to validate the structure and content of a CSV file.\n\n    It can check for expected headers, count missing values per column, \n    and generate a summary report.\n    \"\"\"\n\n    def __init__(self, filepath: str):\n        \"\"\"\n        Initializes the validator by reading the specified CSV file.\n\n        Args:\n            filepath (str): The path to the CSV file.\n\n        Raises:\n            FileNotFoundError: If the provided filepath does not exist.\n        \"\"\"\n        self.filepath = filepath\n        self.data = []\n        self.headers: List[str] = []\n        self._read_csv()\n\n    def _read_csv(self) -> None:\n        \"\"\"\n        Reads the CSV file into memory, storing headers and rows.\n        Handles FileNotFoundError during reading.\n        \"\"\"\n        try:\n            with open(self.filepath, mode='r', newline='', encoding='utf-8') as file:\n                reader = csv.reader(file)\n                \n                # Read the first row as headers\n                try:\n                    self.headers = next(reader)\n                except StopIteration:\n                    # Handle empty file case\n                    self.headers = []\n                    self.data = []\n                    return\n\n                # Read the rest of the rows\n                self.data = list(reader)\n        except FileNotFoundError:\n            raise FileNotFoundError(f\"Error: The file was not found at path: {self.filepath}\")\n        except Exception as e:\n            print(f\"An unexpected error occurred while reading the CSV: {e}\")\n            self.headers = []\n            self.data = []\n\n    def validate_headers(self, expected: List[str]) -> bool:\n        \"\"\"\n        Checks if the actual headers of the CSV match the expected list exactly \n        (order and content).\n\n        Args:\n            expected (list[str]): A list of strings representing the required column names.\n\n        Returns:\n            bool: True if headers match, False otherwise.\n        \"\"\"\n        if not self.headers:\n            print(\"Warning: Cannot validate headers because no data was loaded.\")\n            return False\n            \n        # We compare lists directly for exact match (order matters)",
+          "response_preview": "```python import csv from typing import List, Dict class CSVValidator: \"\"\" A class to validate the structure and content of a CSV file. It can check for expected headers, count missing values per column, and generate a summary report. \"\"\" def __init__(self, filepath: str): \"\"\" Initializes the valida...",
+          "response_non_empty": true,
+          "prompt_tokens": 113,
+          "completion_tokens": 512,
+          "latency_ms": 38191.24,
+          "tokens_per_second": 13.41,
+          "error": ""
+        },
+        {
+          "prompt_name": "medium_analysis",
+          "prompt_length": "medium",
+          "prompt": "Compare the attention mechanisms in the original Transformer (Vaswani et al., 2017) with Flash Attention (Dao et al., 2022). Discuss: (1) computational complexity differences, (2) memory usage patterns, (3) practical impact on training throughput for sequences longer than 4096 tokens, and (4) under what conditions the original attention might still be preferred.",
+          "response_text": "## Comparison of Original Transformer Attention vs. Flash Attention\n\nThe self-attention mechanism is the core component of the Transformer architecture. While the original formulation (Vaswani et al., 2017) was groundbreaking, it suffers from quadratic complexity in sequence length. **Flash Attention** (Dao et al., 2022) is a highly optimized re-implementation designed specifically to address these computational and memory bottlenecks by leveraging modern GPU hardware architecture.\n\nHere is a detailed comparison across the requested dimensions:\n\n---\n\n### 1. Computational Complexity Differences\n\nThe standard self-attention mechanism calculates attention scores using the formula:\n$$\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right)V$$\n\n#### Original Transformer Attention (Standard Implementation)\n* **Time Complexity:** $O(N^2 \\cdot d)$ where $N$ is the sequence length and $d$ is the model dimension. This quadratic dependency on $N$ is the primary bottleneck.\n* **Operation:** Requires computing the full $N \\times N$ attention matrix ($QK^T$).\n\n#### Flash Attention (Optimized Implementation)\nFlash Attention achieves its efficiency by reformulating the softmax calculation to avoid materializing the large, intermediate $N \\times N$ attention matrix in high-bandwidth memory (HBM). It uses a technique called **tiling** and **online softmax computation**.\n\n* **Time Complexity:** The theoretical complexity remains $O(N^2 \\cdot d)$ because the underlying mathematical operation is still quadratic.\n* **Practical Improvement:** However, by minimizing the number of reads/writes to HBM (the slowest memory access), Flash Attention drastically reduces the *actual execution time* and improves throughput significantly in practice, making it much faster than a standard implementation even if the asymptotic complexity remains the same.\n\n**Key Takeaway on Complexity:** While both are theoretically $O(N^2)$, Flash Attention's optimization targets **memory I/O bandwidth**, which is often the limiting factor on modern GPUs, rather than just FLOPs count.\n\n---\n\n### 2. Memory Usage Patterns\n\nMemory usage is arguably where Flash Attention provides its most dramatic improvement.\n\n#### Original Transformer Attention\n* **Pattern:** Requires storing the full $N \\times N$ attention score matrix ($\\text{Scores} = QK^T$) in GPU memory (HBM) before applying softmax and multiplying by $V$.",
+          "response_preview": "## Comparison of Original Transformer Attention vs. Flash Attention The self-attention mechanism is the core component of the Transformer architecture. While the original formulation (Vaswani et al., 2017) was groundbreaking, it suffers from quadratic complexity in sequence length. **Flash Attention...",
+          "response_non_empty": true,
+          "prompt_tokens": 93,
+          "completion_tokens": 512,
+          "latency_ms": 38129.29,
+          "tokens_per_second": 13.43,
+          "error": ""
+        },
+        {
+          "prompt_name": "medium_creative",
+          "prompt_length": "medium",
+          "prompt": "You are a senior product manager at a startup. Write a product brief (200 words max) for a new feature: an AI-powered 'Prompt Optimizer' that takes a user's rough prompt, analyzes it for redundancy and ambiguity, and outputs a compressed version that achieves better results with fewer tokens. Include: problem statement, proposed solution, key metrics, and one potential risk.",
+          "response_text": "## Product Brief: Prompt Optimizer (AI Enhancement)\n\n**Problem:** Our users often write verbose, ambiguous prompts when interacting with LLMs. This leads to wasted API costs due to unnecessary token usage and suboptimal model outputs because the core intent is diluted by fluff or conflicting instructions.\n\n**Solution:** Implement an AI-powered \"Prompt Optimizer.\" Users input their rough prompt; our system analyzes it for redundancy, ambiguity, and structural inefficiency. It then generates a concise, optimized version that retains the original meaning while maximizing clarity and minimizing token count for better LLM performance and cost efficiency.\n\n**Key Metrics:**\n1. **Average Token Reduction per Prompt (Target: >20%)**\n2. **User Reported Output Quality Score Improvement (NPS)**\n3. **Feature Adoption Rate**\n\n**Potential Risk:** Over-optimization could strip away necessary nuance or context that the user *intended* to include, leading to perceived loss of control and negative feedback. Requires robust \"Review/Accept\" UX flow.",
+          "response_preview": "## Product Brief: Prompt Optimizer (AI Enhancement) **Problem:** Our users often write verbose, ambiguous prompts when interacting with LLMs. This leads to wasted API costs due to unnecessary token usage and suboptimal model outputs because the core intent is diluted by fluff or conflicting instruct...",
+          "response_non_empty": true,
+          "prompt_tokens": 88,
+          "completion_tokens": 205,
+          "latency_ms": 15607.29,
+          "tokens_per_second": 13.13,
+          "error": ""
+        },
+        {
+          "prompt_name": "long_coding",
+          "prompt_length": "long",
+          "prompt": "Design and implement a Python module called `token_budget_manager.py` with the following specifications:\n\n1. Class `TokenBudget`:\n   - `__init__(self, total_budget: int, model: str = 'gpt-4o')`\n   - `allocate(self, section: str, content: str) -> AllocationResult` - allocates tokens from the budget for a named section\n   - `remaining(self) -> int` - returns remaining token budget\n   - `report(self) -> BudgetReport` - returns a structured report of all allocations\n   - `optimize(self, target_reduction: float = 0.2) -> list[Suggestion]` - suggests which sections to compress\n\n2. Class `AllocationResult(BaseModel)`: section, token_count, budget_remaining, over_budget(bool)\n3. Class `BudgetReport(BaseModel)`: total_budget, used, remaining, sections(list), utilization_percent\n4. Class `Suggestion(BaseModel)`: section, current_tokens, suggested_tokens, compression_strategy\n\nRequirements:\n- Use tiktoken for token counting\n- Raise `BudgetExceededError` when allocation exceeds remaining budget (allow force=True to override)\n- Thread-safe with a simple lock\n- Include comprehensive docstrings and type hints\n- The `optimize` method should prioritize sections with the highest token count for compression suggestions",
+          "response_text": "This is a comprehensive implementation that meets all the specified requirements.\n\n### `token_budget_manager.py`\n\n```python\nimport threading\nfrom typing import List, Dict, Any\nfrom pydantic import BaseModel, Field\n\ntry:\n    import tiktoken\nexcept ImportError:\n    print(\"Warning: 'tiktoken' library not found. Please install it using: pip install tiktoken\")\n    # Define a placeholder if tiktoken is missing to allow the rest of the code structure to be tested\n    class MockEncoder:\n        def encode(self, text: str, encoding_name: str = \"cl100k_base\") -> List[int]:\n            return [len(text) // 4 + 1] # Mock token count based on length\n    tiktoken = type('module', (object,), {'get_encoding': lambda name: MockEncoder()})()\n\n\n# --- Custom Exception ---\n\nclass BudgetExceededError(Exception):\n    \"\"\"Custom exception raised when an allocation attempt exceeds the remaining budget.\"\"\"\n    def __init__(self, requested: int, available: int, section: str):\n        self.requested = requested\n        self.available = available\n        self.section = section\n        super().__init__(f\"Budget exceeded for section '{section}'. Requested: {requested}, Available: {available}\")\n\n# --- Pydantic Models (Data Structures) ---\n\nclass AllocationResult(BaseModel):\n    \"\"\"Result of a token allocation attempt.\"\"\"\n    section: str\n    token_count: int\n    budget_remaining: int\n    over_budget: bool = Field(description=\"True if the allocation required exceeding the initial budget.\")\n\nclass BudgetReport(BaseModel):\n    \"\"\"A comprehensive report summarizing token usage.\"\"\"\n    total_budget: int\n    used: int\n    remaining: int\n    sections: List[Dict[str, Any]] = Field(description=\"List detailing tokens used per section.\")\n    utilization_percent: float\n\nclass Suggestion(BaseModel):\n    \"\"\"A suggestion for compressing a specific section.\"\"\"\n    section: str\n    current_tokens: int\n    suggested_tokens: int\n    compression_strategy: str\n\n\n# --- Core Manager Class ---\n\nclass TokenBudget:\n    \"\"\"\n    Manages and tracks token usage against a predefined budget, providing reporting \n    and optimization suggestions.\n    \"\"\"\n    def __init__(self, total_budget: int, model: str = 'gpt-4o'):\n        \"\"\"\n        Initializes the TokenBudget manager.\n\n        Args:\n            total_budget: The maximum number of tokens allowed.\n            model: The name of the LLM model (used for encoding context).\n        \"\"\"\n        if total_budget < 0:\n            raise ValueError(\"Total budget cannot be negative.\")\n            \n        self._total_budget = total_budget\n        self._current_budget = total_budget\n        self.model_name = model\n        # Stores {section_name: {\"tokens\": count, \"content\": str}}\n        self._allocations: Dict[str, Dict[str, Any]] = {}\n        self._lock = threading.Lock()\n\n        print(f\"TokenBudget initialized for model '{model}' with a budget of {total_budget} tokens.\")\n\n\n    def _count_tokens(self, content: str) -> int:\n        \"\"\"Internal helper to count tokens using tiktoken.\"\"\"\n        try:\n            encoding = tiktoken.get_encoding(self.model_name)\n            tokens = encoding.encode(content)\n            return len(tokens)\n        except Exception as e:\n            print(f\"Error during token counting (Is 'tiktoken' installed?): {e}\")\n            # Fallback to a simple length-based estimate if tiktoken fails critically\n            return max(1, len(content) // 4)\n\n\n    def allocate(self, section: str, content: str, force: bool = False) -> AllocationResult:\n        \"\"\"\n        Allocates tokens from the budget for a named section.\n\n        Args:\n            section: A unique name identifier for this allocation (e.g., \"prompt_system\").\n            content: The text content to measure and allocate tokens for.\n            force: If True, allows allocation even if it exceeds the current budget.\n\n        Returns:\n            An AllocationResult detailing the transaction.\n\n        Raises:\n            BudgetExceededError: If the required tokens exceed the remaining budget \n                                 and force is False.\n        \"\"\"\n        token_count = self._count_tokens(content)\n        \n        with self._lock:\n            if token_count <= 0:\n                raise ValueError(\"Content resulted in zero or negative tokens",
+          "response_preview": "This is a comprehensive implementation that meets all the specified requirements. ### `token_budget_manager.py` ```python import threading from typing import List, Dict, Any from pydantic import BaseModel, Field try: import tiktoken except ImportError: print(\"Warning: 'tiktoken' library not found. P...",
+          "response_non_empty": true,
+          "prompt_tokens": 308,
+          "completion_tokens": 1024,
+          "latency_ms": 77923.41,
+          "tokens_per_second": 13.14,
+          "error": ""
+        },
+        {
+          "prompt_name": "long_analysis",
+          "prompt_length": "long",
+          "prompt": "You are an AI researcher writing a literature review section. Analyze the following research question and provide a structured response:\n\nResearch Question: How do different prompt compression techniques affect the quality-cost tradeoff in LLM inference?\n\nCover these areas:\n1. Token-level pruning: techniques that remove or replace individual tokens while preserving semantic meaning. Discuss approaches like LLMLingua, Selective Context, and PCRL. What are their typical compression ratios and quality retention rates?\n2. Semantic compression: methods that rephrase content more concisely. How do they compare to token-level approaches in terms of meaning preservation?\n3. Structural optimization: techniques that reorganize prompt structure (positional anchoring, section reordering) to improve attention efficiency without reducing token count.\n4. Hybrid approaches: systems that combine multiple techniques. What are the theoretical and practical advantages?\n\nFor each area, discuss: (a) key papers and methods, (b) reported compression rates, (c) quality impact metrics, (d) computational overhead of the compression itself.\n\nConclude with: what gaps remain in the literature, and what would a practical system need to address?",
+          "response_text": "## Literature Review: Prompt Compression Techniques and the Quality-Cost Tradeoff in LLM Inference\n\nThe escalating cost and latency associated with large language model (LLM) inference present a critical bottleneck for real-world deployment. A major area of research addresses prompt compression-the process of reducing the input token count while minimizing degradation to the model's output quality. This review systematically analyzes current literature across four primary categories of compression techniques: token-level pruning, semantic rephrasing, structural optimization, and hybrid methodologies.\n\n---\n\n### 1. Token-Level Pruning (Token Reduction)\n\nToken-level pruning aims to surgically remove or replace individual tokens within the prompt sequence ($\\mathbf{P}$) with minimal impact on the underlying meaning or necessary context for the LLM's task completion. These methods operate under the assumption that not all input tokens contribute equally to the final output quality.\n\n**(a) Key Papers and Methods:**\n* **LLMLingua/Selective Context:** These approaches often rely on identifying \"redundant\" or low-information-density tokens (e.g., stop words, filler phrases, highly predictable boilerplate text). They might use statistical models or attention weight analysis to score token importance.\n* **Prompt Compression via Redundancy Removal (PCRL):** Techniques like PCRL focus on detecting and eliminating $n$-gram redundancies or near-duplicate information within the prompt context itself.\n\n**(b) Reported Compression Rates:**\nReported compression ratios are highly task-dependent but generally range from **10% to 40% reduction** for boilerplate/instructional prompts, with higher rates achievable in purely informational contexts (e.g., summarizing long documents).\n\n**(c) Quality Impact Metrics:**\nQuality is typically measured using downstream task metrics: BLEU/ROUGE scores (for summarization), F1 score (for QA), or human evaluation scores for coherence and relevance. Studies show that well-executed pruning can maintain quality above **95% of the baseline** on specific tasks, provided the removed tokens are not critical anchors for the model's reasoning path.\n\n**(d) Computational Overhead:**\nThe overhead is primarily incurred during the *compression* phase. Methods relying on attention visualization or complex statistical modeling (like identifying optimal pruning masks) can add **moderate computational cost ($\\mathcal{O}(N \\cdot D^2)$)**, where $N$ is prompt length and $D$ is embedding dimension. This must be weighed against the inference savings.\n\n---\n\n### 2. Semantic Compression (Rephrasing/Paraphrasing)\n\nUnlike token-level pruning which *removes* tokens, semantic compression aims to *rewrite* the input prompt using fewer words while preserving the core meaning and intent. This is fundamentally a controlled text generation task applied to the prompt itself.\n\n**(a) Key Papers and Methods:**\nThis area often leverages smaller, specialized sequence-to-sequence models or fine-tuned LLMs specifically for paraphrasing/summarization of instructions. The goal is to transform $\\mathbf{P}_{\\text{original}} \\rightarrow \\mathbf{P}_{\\text{compressed}}$ such that $LLM(\\mathbf{P}_{\\text{compressed}}) \\approx LLM(\\mathbf{P}_{\\text{original}})$.\n\n**(b) Comparison to Token-Level Approaches:**\nSemantic compression generally offers **superior meaning preservation** compared to blind token removal. Pruning risks removing necessary context anchors, whereas rephrasing actively reconstructs the *intent*. However, it is significantly more complex and computationally expensive than simple pruning because it requires a full generative pass over the prompt.\n\n**(c) Reported Compression Rates:**\nCompression rates are variable but can achieve **20% to 50% reduction** in token count while maintaining high semantic fidelity.\n\n**(d) Quality Impact Metrics:**\nQuality is assessed by measuring *semantic similarity* (e.g., using BERTScore or specialized embedding distance metrics) between the original and compressed prompts, alongside downstream task performance. High-quality methods report minimal drop ($\\leq 3\\%$) in task accuracy.\n\n---\n\n### 3. Structural Optimization (Attention Efficiency)\n\nStructural optimization techniques do not reduce the token count but rather reorganize *how* the model processes the existing tokens to improve computational efficiency, primarily by modifying the attention mechanism's complexity or pattern.\n\n**(a) Key Papers and Methods:**\n* **Positional Anchoring/Key-Value Caching Optimization:** Techniques that identify which parts of the prompt are most critical for context setting (e.g., system instructions vs. user input) and optimize how these keys/values are cached across turns.\n* **Section Reordering:** Analyzing the dependency graph within a multi-part prompt (e.g., \"Here is the data [A], use this format [B] to answer the question [C]\") and reordering sections to minimize redundant attention calculations or improve sequential processing flow for the underlying transformer architecture.\n\n**(b) Reported Compression Rates:**\nThese",
+          "response_preview": "## Literature Review: Prompt Compression Techniques and the Quality-Cost Tradeoff in LLM Inference The escalating cost and latency associated with large language model (LLM) inference present a critical bottleneck for real-world deployment. A major area of research addresses prompt compression-the p...",
+          "response_non_empty": true,
+          "prompt_tokens": 242,
+          "completion_tokens": 1024,
+          "latency_ms": 80482.06,
+          "tokens_per_second": 12.72,
+          "error": ""
+        }
+      ],
+      "structured": {
+        "success": true,
+        "content": {
+          "intent": "Prompt Optimization",
+          "keywords": [
+            "shrink prompts",
+            "long prompts",
+            "essential requirements",
+            "faster way"
+          ],
+          "complexity": "medium"
+        },
+        "error": ""
+      },
+      "latency_runs": [
+        {
+          "run": 1,
+          "latency_ms": 2264.03,
+          "completion_tokens": 26,
+          "tokens_per_second": 11.48,
+          "error": ""
+        },
+        {
+          "run": 2,
+          "latency_ms": 2323.25,
+          "completion_tokens": 26,
+          "tokens_per_second": 11.19,
+          "error": ""
+        },
+        {
+          "run": 3,
+          "latency_ms": 2303.23,
+          "completion_tokens": 26,
+          "tokens_per_second": 11.29,
+          "error": ""
+        },
+        {
+          "run": 4,
+          "latency_ms": 2352.71,
+          "completion_tokens": 26,
+          "tokens_per_second": 11.05,
+          "error": ""
+        },
+        {
+          "run": 5,
+          "latency_ms": 2279.76,
+          "completion_tokens": 26,
+          "tokens_per_second": 11.4,
+          "error": ""
+        }
+      ],
+      "avg_latency_ms": 2304.6,
+      "std_latency_ms": 31.39,
+      "avg_tokens_per_second": 11.28,
+      "response_non_empty_rate": 1.0,
+      "structured_success_rate": 1.0,
+      "load_error": "",
+      "precheck": {
+        "ready": true,
+        "load_confirmed": true,
+        "health_available": true,
+        "smoke_test_success": true,
+        "health_latency_ms": 4.74,
+        "smoke_test_preview": "READY",
+        "smoke_test_completion_tokens": 2,
+        "error": ""
+      }
+    },
+    {
+      "name": "GPT-OSS-Nano",
+      "lmstudio_id": "https://huggingface.co/squ11z1/gpt-oss-nano",
+      "actual_model_id": "gpt-oss-nano",
+      "params": "9B total / 3B active (MoE)",
+      "notes": "OpenAI GPT-OSS English text,MoE English text,131K English text",
+      "available": true,
+      "health": {
+        "available": true,
+        "latency_ms": 24.74,
+        "history": [
+          {
+            "available": true,
+            "latency_ms": 24.74
+          }
+        ]
+      },
+      "prompt_results": [
+        {
+          "prompt_name": "short_coding",
+          "prompt_length": "short",
+          "prompt": "Write a Python function to check if a number is prime.",
+          "response_text": "Here's a quick Python function that tells whether an integer is a "prime" (i.e., one of 2, 3, 5, 7, 11, ...).  \nIt simply checks against the list of prime numbers and returns `True`/`False`.  \n\n```python\ndef is_prime(n):\n    \"\"\"\n    Checks if n is a prime number.\n\n    Parameters:\n        n - an integer (\n\nThe user wants \"Write a Python function to check if a number is prime.\" They want a function that checks if a number is prime. Likely they mean prime numbers: 2,3,5,7,... The function should take an integer input and return True/False or maybe output the number.\n\nWe can provide code:\n\n```\ndef is_prime(n):\n    \"\"\"Return True if n is a prime number.\"\"\"\n    ...\n```\n\nUse list of primes. Or use modulo check.\n\nSimpler: `return (n % 2) == 0 and (n % 3) == 0 and ...` but easier to use known primes list.\n\nWe can also provide function that returns the number if it's prime.\n\nLet's produce answer with explanation, code snippet, usage examples.",
+          "response_preview": "Here's a quick Python function that tells whether an integer is a "prime" (i.e., one of 2, 3, 5, 7, 11, ...). It simply checks against the list of prime numbers and returns `True`/`False`. ```python def is_prime(n): \"\"\" Checks if n is a prime number. Parameters: n - an integer ( The user wants \"Write ...",
+          "response_non_empty": true,
+          "prompt_tokens": 79,
+          "completion_tokens": 256,
+          "latency_ms": 18791.75,
+          "tokens_per_second": 13.62,
+          "error": ""
+        },
+        {
+          "prompt_name": "short_translation",
+          "prompt_length": "short",
+          "prompt": "Translate to Chinese: 'The quick brown fox jumps over the lazy dog.'",
+          "response_text": "",
+          "response_preview": "",
+          "response_non_empty": false,
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "latency_ms": 3208.52,
+          "tokens_per_second": 0.0,
+          "error": "LM Studio text generation failed for model 'gpt-oss-nano' with status 400."
+        },
+        {
+          "prompt_name": "short_factual",
+          "prompt_length": "short",
+          "prompt": "What are the three laws of thermodynamics? Answer in one sentence each.",
+          "response_text": "The user asks: \"What are the three laws of thermodynamics? Answer in one sentence each.\" So we need to list the three laws of thermodynamics, presumably referring to the laws of heat transfer: conservation of energy (law of conservation), law of entropy, and law of temperature. But there might be confusion: In physics, the laws of thermodynamics are:\n\n1. The Law of Conservation of Energy (or Conservation Law): Energy cannot be created or destroyed within a system; it can only change form.\n\n2. The Law of Entropy (Entropy Law): Heat energy is always transferred from high to low temperature.\n\n3. The Law of Temperature (Temperature Law): The temperature at the same point in space is constant for any pair of objects with equal masses and no external influences.\n\nAlternatively, some sources mention: 1) Conservation of Energy, 2) Entropy, 3) Temperature. So answer each in one sentence. Provide three sentences. Ensure clarity. Let's produce:\n\n- The conservation law states that energy cannot be created or destroyed within a system; it can only change its form.\n- The entropy law says that heat always flows from higher to lower temperature.\n- The temperature law asserts that the temperature at any point is constant for equal",
+          "response_preview": "The user asks: \"What are the three laws of thermodynamics? Answer in one sentence each.\" So we need to list the three laws of thermodynamics, presumably referring to the laws of heat transfer: conservation of energy (law of conservation), law of entropy, and law of temperature. But there might be co...",
+          "response_non_empty": true,
+          "prompt_tokens": 82,
+          "completion_tokens": 256,
+          "latency_ms": 18819.36,
+          "tokens_per_second": 13.6,
+          "error": ""
+        },
+        {
+          "prompt_name": "medium_coding",
+          "prompt_length": "medium",
+          "prompt": "Write a Python class called `CSVValidator` with methods: `__init__(self, filepath: str)` that reads a CSV file, `validate_headers(self, expected: list[str]) -> bool` that checks column names, `find_missing_values(self) -> dict[str, int]` that returns column name to missing count mapping, and `summary(self) -> str` that returns a human-readable validation report. Include type hints, docstrings, and handle FileNotFoundError.",
+          "response_text": "We need to write Python class called CSVValidator with methods: __init__(self, filepath: str) reads a CSV file; validate_headers(self, expected: list[str]) -> bool that checks column names; find_missing_values(self) -> dict[str, int] returns column name to missing count mapping; summary(self) -> str returns human-readable validation report. Include type hints, docstrings, and handle FileNotFoundError.\n\nWe need to produce code with proper type hints like def __init__(self, filepath: str): ... etc. Use docstrings for each method. Also handle FileNotFoundError: maybe if file not found, raise error or return None? Provide a class that can be used by reading CSV file and validating headers.\n\nWe'll implement methods:\n\n- __init__(self, filepath: str) -> bool: reads the CSV file from given path string; returns True if file found else False. We'll use os.path.find? But we need to read CSV file. Use open('path') maybe using PathFinder? We can use built function PathFinder? Actually we have PathFinder class earlier. Let's check PathFinder docstring: PathFinder(self, filepath: str) -> bool reads a path string and returns True if found else False. So we can call PathFinder to get file existence. Then read the CSV file using open().\n\n- validate_headers(self, expected: list[str]) -> bool: checks column names against expected list; returns True if all match else False. We'll iterate over each expected column name and compare actual column name from csv file's header row? We need to parse CSV file into dict of columns with names and values. Use open() to read file then parse.\n\n- find_missing_values(self) -> dict[str, int]: returns mapping of column name to missing count: number of missing entries for that column. We'll compute missing count as difference between expected count (maybe from header row?) Actually we can use expected list? But missing values may be relative to expected list or actual counts? We can compute missing count by comparing expected count of column names? The expected list only contains names, not counts. So missing count mapping: for each column name, missing count = number of missing entries (0 if none). We'll need to know expected count maybe from header row? Actually we could use expected list as names; missing count computed by difference between expected count and actual count? But we don't have expected count. We can compute missing count by comparing expected list's length? Not enough.\n\nSimpl",
+          "response_preview": "We need to write Python class called CSVValidator with methods: __init__(self, filepath: str) reads a CSV file; validate_headers(self, expected: list[str]) -> bool that checks column names; find_missing_values(self) -> dict[str, int] returns column name to missing count mapping; summary(self) -> str...",
+          "response_non_empty": true,
+          "prompt_tokens": 165,
+          "completion_tokens": 512,
+          "latency_ms": 37441.47,
+          "tokens_per_second": 13.67,
+          "error": ""
+        },
+        {
+          "prompt_name": "medium_analysis",
+          "prompt_length": "medium",
+          "prompt": "Compare the attention mechanisms in the original Transformer (Vaswani et al., 2017) with Flash Attention (Dao et al., 2022). Discuss: (1) computational complexity differences, (2) memory usage patterns, (3) practical impact on training throughput for sequences longer than 4096 tokens, and (4) under what conditions the original attention might still be preferred.",
+          "response_text": "We need to compare Transformer vs Flash Attention. Provide discussion of computational complexity differences: original Transformer uses full tensor inference with all tokens; Flash Attention uses selective attention via memory buffer storing only head token and a few tokens? Actually Flash Attention stores entire sequence in memory but only processes head token each time, using memory for rest tokens. So complexity difference: Transformer does O(n) per token operations; Flash reduces O(1) per token plus memory retrieval O(log n). Memory usage patterns: Transformer uses memory to store all tokens; Flash uses memory to store entire sequence but only accesses head token each time, so memory usage is high but retrieval cost low. Practical impact on training throughput for sequences longer than 4096 tokens: Transformer suffers performance drop due to O(n) and memory overhead; Flash improves throughput by reducing operations per token, enabling long sequences. Under conditions original attention might still be preferred: when sequence length small (<4096), or when need to compute full tensor for tasks requiring global context (like cross-reference across tokens). Also if Flash's implementation complexity high or requires more memory hardware, may not be beneficial; also if model uses many operations that depend on all tokens like computing long-term dependencies.\n\nWe should mention that Flash uses memory buffer but only processes head token each time; thus reduces O(n) to O(1) per token plus retrieval cost. Complexity difference: Transformer O(n) for each token, leading to O(n^2) overall? Actually complexity of inference is O(n) per token times n tokens = O(n). Flash reduces O(1) per token but memory retrieval cost O(log n). So overall complexity may be similar but with less overhead.\n\nMemory usage patterns: Transformer stores all tokens in memory; Flash stores entire sequence too large, but memory used to store entire sequence anyway. But difference is that Flash uses memory for rest tokens but not accessed until needed; so memory usage high but retrieval cost low.\n\nPractical impact on training throughput: For sequences >4096 tokens, Transformer suffers due slowdown due to O(n) and memory overhead; Flash improves throughput by reducing operations per token, enabling longer sequences. Under conditions original attention might still be preferred: small sequence length, or tasks requiring global context, or when Flash's implementation complexity high.\n\nWe need to discuss each point in detail. Provide citations? Not necessary but can mention references.\n\nAlso mention that Flash uses memory buffer of entire sequence; but only processes head token each time; this reduces O(n) to O(1). Complexity difference",
+          "response_preview": "We need to compare Transformer vs Flash Attention. Provide discussion of computational complexity differences: original Transformer uses full tensor inference with all tokens; Flash Attention uses selective attention via memory buffer storing only head token and a few tokens? Actually Flash Attentio...",
+          "response_non_empty": true,
+          "prompt_tokens": 146,
+          "completion_tokens": 512,
+          "latency_ms": 37212.55,
+          "tokens_per_second": 13.76,
+          "error": ""
+        },
+        {
+          "prompt_name": "medium_creative",
+          "prompt_length": "medium",
+          "prompt": "You are a senior product manager at a startup. Write a product brief (200 words max) for a new feature: an AI-powered 'Prompt Optimizer' that takes a user's rough prompt, analyzes it for redundancy and ambiguity, and outputs a compressed version that achieves better results with fewer tokens. Include: problem statement, proposed solution, key metrics, and one potential risk.",
+          "response_text": "**Prompt Optimizer - Product Brief**\n\n*Problem Statement:*  \nUsers frequently draft prompts for AI tools that are verbose, redundant, or ambiguous-leading to sub-optimal results and wasted token budgets. In a token-constrained environment (e.g., GPT-4, ChatGPT), every 1 token can cost up time and accuracy. The lack of automated prompt refinement forces users to manually experiment, wasting effort.\n\n*Proposed Solution:*  \nThe Prompt Optimizer is an AI layer that inges a user's rough prompt, runs a semantic-analysis pipeline to flag redundancy, ambiguity, and super-verbosity, then compresses the prompt into a token-efficient form. The output includes: (1) a concise version with fewer tokens; (2) a list of removed words/phrings; (3) optional "confidence" score indicating how likely the AI will produce correct results. Users can choose to accept the optimized prompt or tweak it further. The system learns from user feedback, improving future suggestions.\n\n*Key Metrics:*  \n- **Token Savings**\n\nWe need to write a product brief (200 words max). So we should aim around 200 words, maybe 150-200 words. The feature is an AI-powered 'Prompt Optimizer' that takes a user's rough prompt, analyzes it for redundancy and ambiguity, outputs compressed version achieving better results with fewer tokens.\n\nInclude: problem statement, proposed solution, key metrics, one potential risk.\n\nWe need to write as if I'm senior product manager at startup. So we can use first voice \"we\" or \"this feature\".\n\nWord count: 200 words max. Let's aim ~180-190 words.\n\nLet's produce:\n\nTitle: Prompt Optimizer\n\nProblem statement: Users often craft prompts for AI but they are verbose, ambiguous, redundant; leads to poor results and wasted tokens. Need efficient prompt generation.\n\nProposed solution: The AI analyzes user input, identifies redundancy, ambiguity, compresses into concise version, outputs final prompt with fewer tokens that yields higher accuracy. Provide suggestions, highlight key words, etc.\n\nKey metrics: token usage reduction, result quality improvement (accuracy score), time saved, user satisfaction rating, adoption rate.\n\nPotential risk: Over-sabling may remove nuance; risk of misinterpreting context leading to wrong results.\n\nLet's produce 200 words.\n\nWe need to include \"key metrics\" and \"one potential risk\".\n\nOk. Let's write:\n\nWord count approximate: 180-190.\n\nWe'll do final answer.",
+          "response_preview": "**Prompt Optimizer - Product Brief** *Problem Statement:* Users frequently draft prompts for AI tools that are verbose, redundant, or ambiguous-leading to sub-optimal results and wasted token budgets. In a token-constrained environment (e.g., GPT-4, ChatGPT), every 1 token can cost up time and accur...",
+          "response_non_empty": true,
+          "prompt_tokens": 142,
+          "completion_tokens": 512,
+          "latency_ms": 37507.25,
+          "tokens_per_second": 13.65,
+          "error": ""
+        },
+        {
+          "prompt_name": "long_coding",
+          "prompt_length": "long",
+          "prompt": "Design and implement a Python module called `token_budget_manager.py` with the following specifications:\n\n1. Class `TokenBudget`:\n   - `__init__(self, total_budget: int, model: str = 'gpt-4o')`\n   - `allocate(self, section: str, content: str) -> AllocationResult` - allocates tokens from the budget for a named section\n   - `remaining(self) -> int` - returns remaining token budget\n   - `report(self) -> BudgetReport` - returns a structured report of all allocations\n   - `optimize(self, target_reduction: float = 0.2) -> list[Suggestion]` - suggests which sections to compress\n\n2. Class `AllocationResult(BaseModel)`: section, token_count, budget_remaining, over_budget(bool)\n3. Class `BudgetReport(BaseModel)`: total_budget, used, remaining, sections(list), utilization_percent\n4. Class `Suggestion(BaseModel)`: section, current_tokens, suggested_tokens, compression_strategy\n\nRequirements:\n- Use tiktoken for token counting\n- Raise `BudgetExceededError` when allocation exceeds remaining budget (allow force=True to override)\n- Thread-safe with a simple lock\n- Include comprehensive docstrings and type hints\n- The `optimize` method should prioritize sections with the highest token count for compression suggestions",
+          "response_text": "We need to design Python module token_budget_manager.py. Provide classes: TokenBudget, AllocationResult, BudgetReport, Suggestion.\n\nUse tiktoken library for token counting. Implementation details:\n\nTokenBudget: __init__(self, total_budget: int, model: str = 'gpt-4o') . allocate(section: str, content: str) -> AllocationResult. Should compute tokens used from content length? Use tiktoken to count tokens of content string. Then allocate tokens from budget to section; if allocation exceeds remaining budget raise BudgetExceededError unless force=True.\n\nremaining(self) -> int returns remaining token budget after allocations.\n\nreport(self) -> BudgetReport struct report: total_budget, used, remaining, sections(list), utilization_percent.\n\noptimize(self, target_reduction: float = 0.2) -> list[Suggestion] suggests compress sections with highest token count for compression suggestions. Should compute token counts per section; choose those where token_count > threshold? Use target reduction factor to compute suggested tokens maybe reduce by target_reduction * current_tokens? Provide Suggestion class.\n\nAlso thread-safe simple lock: use threading.Lock().\n\nDocstrings and type hints.\n\nImplement tiktoken library import from python module. We'll need to create import of tiktoken library; we can implement a wrapper that imports library via import(tiktoken). Use tiktoken's functions: count_tokens(content, model) returns token count. We'll also use tiktoken.count_tokens for content length.\n\nDefine BudgetExceededError class raising error if allocation > remaining budget unless force=True param passed to allocate method.\n\nImplement allocate method with optional force parameter? Not specified but we can add force=True optional param in allocate method signature: allocate(section, content) -> AllocationResult. But spec didn't include force param; but raise error when exceeds budget (allow force=True to override). So we need allocate method accept force param maybe optional bool. We'll implement allocate(self, section: str, content: str, force: bool = True) -> AllocationResult.\n\nBut spec didn't mention force param; but requirement says allow force=True to override. We can add optional parameter force in method signature.\n\nImplement AllocationResult(BaseModel): section, token_count, budget_remaining, over_budget(bool). BaseModel maybe type hint? We'll define class AllocationResult with attributes: section (str), token_count (int), budget_remaining (int), over_budget (bool). Provide type hints.\n\nBudgetReport(BaseModel): attributes: total_budget (int), used (int), remaining (int), sections(list[str]), utilization_percent (float).\n\nSuggestion(BaseModel): attributes: section, current_tokens, suggested_tokens, compression_strategy.\n\nAlso docstrings for each methods and classes.\n\nThread-safe lock: use threading.Lock() to ensure thread safety. We'll wrap module in a class TokenBudgetManager with internal functions? Actually module token_budget_manager.py will contain these classes; we can create a wrapper class TokenBudgetManager that uses the other classes and ensures thread-safety by using threading.Lock(). Provide docstrings.\n\nLet's design:\n\n```\n# token_budget_manager.py\nimport tiktoken\n\nclass TokenBudget:\n    \"\"\"Main class to manage token budget for GPT models.\"\"\"\n    def __init__(self, total_budget: int, model: str = 'gpt-4o'):\n        ...\n    allocate(self, section: str, content: str, force: bool = True) -> AllocationResult\n    remaining(self) -> int\n    report(self) -> BudgetReport\n    optimize(self, target_reduction: float = 0.2) -> list[Suggestion]\n```\n\nDefine AllocationResult(BaseModel):\n   ```\nclass AllocationResult(BaseModel):\n    \"\"\"Result of allocating tokens to a section.\"\"\"\n    def __init__(self, section: str, content: str, force: bool = True) -> None\n    section: str\n    token_count: int\n    budget_remaining: int\n    over_budget: bool\n   ```\n\nBut we need allocate method returns AllocationResult; so AllocationResult should be a class with attributes and type hints. Provide __init__ maybe not needed.\n\nBudgetReport(BaseModel):\n   ```\nclass BudgetReport(BaseModel):\n    \"\"\"Structured report of allocations.\"\"\"\n    total_budget: int\n    used: int\n    remaining: int\n    sections: list[str]\n    utilization_percent: float\n   ```\n\nSuggestion class:\n```\nclass Suggestion(BaseModel):\n    \"\"\"Suggest compression for sections.\"\"\"\n    section: str\n    current_tokens: int\n    suggested_tokens: int\n    compression_strategy: str\n```\n\nImplement tiktoken library import. Use tiktoken.count_tokens(content, model). Provide functions.\n\nAlso implement BudgetExceededError class:\n   ```\nclass BudgetExceededError:\n    \"\"\"Raised when allocation exceeds remaining budget.\"\"\"\n    def __init__(self, section: str, content: str) -> None\n    raise_error: bool\n   ```\n\nBut spec didn't mention class; we can use a function that returns error.\n\nSimplify: In allocate method, compute token_count = t",
+          "response_preview": "We need to design Python module token_budget_manager.py. Provide classes: TokenBudget, AllocationResult, BudgetReport, Suggestion. Use tiktoken library for token counting. Implementation details: TokenBudget: __init__(self, total_budget: int, model: str = 'gpt-4o') . allocate(section: str, content: ...",
+          "response_non_empty": true,
+          "prompt_tokens": 343,
+          "completion_tokens": 1024,
+          "latency_ms": 75093.34,
+          "tokens_per_second": 13.64,
+          "error": ""
+        },
+        {
+          "prompt_name": "long_analysis",
+          "prompt_length": "long",
+          "prompt": "You are an AI researcher writing a literature review section. Analyze the following research question and provide a structured response:\n\nResearch Question: How do different prompt compression techniques affect the quality-cost tradeoff in LLM inference?\n\nCover these areas:\n1. Token-level pruning: techniques that remove or replace individual tokens while preserving semantic meaning. Discuss approaches like LLMLingua, Selective Context, and PCRL. What are their typical compression ratios and quality retention rates?\n2. Semantic compression: methods that rephrase content more concisely. How do they compare to token-level approaches in terms of meaning preservation?\n3. Structural optimization: techniques that reorganize prompt structure (positional anchoring, section reordering) to improve attention efficiency without reducing token count.\n4. Hybrid approaches: systems that combine multiple techniques. What are the theoretical and practical advantages?\n\nFor each area, discuss: (a) key papers and methods, (b) reported compression rates, (c) quality impact metrics, (d) computational overhead of the compression itself.\n\nConclude with: what gaps remain in the literature, and what would a practical system need to address?",
+          "response_text": "**Literature Review - Prompt-Compression Techniques for Large-Language-Model (LLM) Inference**\n\nThe central question is: *"How do different prompt-compression techniques affect the quality-cost trade-off in LLM inference?"*  Below is a structured synthesis of the current state of research, grouped by the four methodological families that have emerged in the community.\n\n| **Area** | **Key Papers / Methods** | **Compression Rates (tokens)** | **Quality Impact Metrics** | **Computational Overhead** |\n|---|---|---|---|---|\n|**1. Token-Level Pruning** | - *LLMLingua* - a token-replacement engine that replaces semantically equivalent words with shorter synonyms. <br>- *Selective Context (SC)* - a context-aware pruning algorithm that removes tokens only when they are not referenced by the model's inference graph. <br>- *PCRL (Prag-Contextual Re-Lexification)* - a rule-based token-replacement pipeline that uses a pre-trained dictionary of high-frequency lexical forms. | - LLMLingua: 15-20 % reduction on typical prompts; SC: ~30 %; PCRL: ~25 %. | - LLMLingua: 95 % meaning preservation (measured by *semantic-coverage* score). <br>- SC: 90 % coverage, +5 % error rate in rare edge cases. <br>- PCRL: 92 % coverage; 2 % drop in *context-reference* accuracy. | - Token-level pruning is essentially a *lexical substitution* step that costs ~10-15 ms per token on a 1 GB memory LLM; the overhead scales linearly with prompt length (about 0.5 s for 200 tokens). |\n|**2. Semantic Compression** | - *Conc-Rephrase Engine (CRE)* - rephrens content into high-density sentences while preserving meaning. <br>- *Meaning-Preserving Summator (MPS)* - a summarisation algorithm that compresses prompts to ~30 % token count by dropping redundant clauses. | - CRE: 20-25 %; MPS: 35 %. | - CRE: 98 % meaning preservation; MPS: 95 % but +10 % drop in *sub-topic* accuracy (measured by *topic-coverage* metric). | - Semantic compression requires a *semantic-graph* inference that runs ~200 ms per token, plus an extra *context-analysis* step (~50 ms) to detect potential loss. |\n|**3. Structural Optimization** | - *Positional Anchoring (PA)* - re-positions key concepts at the beginning of the prompt to reduce attention span. <br>- *Section Reordering (SR)* - splits long prompts into logical sections that are read sequentially by the model. | - PA: 10 % token reduction (by moving tokens to earlier positions). SR: 0 % token count change but ~30 % processing-time savings due to reduced attention span. | - PA: 90 % meaning preservation; SR: 95 % with +5 % drop in *attention-bias* metric. | - Structural changes are essentially a *layout\n\nWe need to produce a structured response analyzing research question: \"How do different prompt compression techniques affect the quality-cost tradeoff in LLM inference?\" Cover areas 1-4. Provide for each area: key papers/methods, reported compression rates, quality impact metrics, computational overhead of compression itself.\n\nAlso discuss gaps and practical system needs.\n\nNeed to mention token-level pruning: LLMLingua, Selective Context, PCRL. Provide typical compression ratios and quality retention rates.\n\nSemantic compression: rephrase concisely; compare to token-level in meaning preservation.\n\nStructural optimization: reorganize prompt structure (positional anchoring, section reordering) to improve attention efficiency without reducing token count.\n\nHybrid approaches: combine multiple techniques; theoretical/practical advantages.\n\nNeed to mention key papers and methods for each area. Provide compression rates, quality impact metrics, computational overhead.\n\nAlso discuss gaps in literature and what practical system needs to address.\n\nWe should structure with headings: 1 Token-level pruning, subpoints a-d; 2 Semantic compression; 3 Structural optimization; 4 Hybrid approaches; Conclusion.\n\nNeed to mention typical compression ratios e.g., 30% token reduction etc. Provide quality retention rates maybe percent of meaning preserved or error rates.\n\nAlso computational overhead: time complexity, memory usage.\n\nLet's produce a literature review section.\n\nWe need to analyze research question: \"How do different prompt compression techniques affect the quality-cost tradeoff in LLM inference?\" So we discuss tradeoff between quality and cost (time, tokens). Provide analysis.\n\nOk. Let's craft answer.",
+          "response_preview": "**Literature Review - Prompt-Compression Techniques for Large-Language-Model (LLM) Inference** The central question is: *"How do different prompt-compression techniques affect the quality-cost trade-off in LLM inference?"* Below is a structured synthesis of the current state of research, grouped by ...",
+          "response_non_empty": true,
+          "prompt_tokens": 295,
+          "completion_tokens": 1024,
+          "latency_ms": 63851.06,
+          "tokens_per_second": 16.04,
+          "error": ""
+        }
+      ],
+      "structured": {
+        "success": true,
+        "content": {
+          "intent": "Intent",
+          "keywords": [
+            "sh",
+            "...",
+            "analysis"
+          ],
+          "complexity": "high"
+        },
+        "error": ""
+      },
+      "latency_runs": [
+        {
+          "run": 1,
+          "latency_ms": 6752.64,
+          "completion_tokens": 96,
+          "tokens_per_second": 14.22,
+          "error": ""
+        },
+        {
+          "run": 2,
+          "latency_ms": 5975.76,
+          "completion_tokens": 96,
+          "tokens_per_second": 16.06,
+          "error": ""
+        },
+        {
+          "run": 3,
+          "latency_ms": 6275.47,
+          "completion_tokens": 96,
+          "tokens_per_second": 15.3,
+          "error": ""
+        },
+        {
+          "run": 4,
+          "latency_ms": 6340.18,
+          "completion_tokens": 96,
+          "tokens_per_second": 15.14,
+          "error": ""
+        },
+        {
+          "run": 5,
+          "latency_ms": 6479.63,
+          "completion_tokens": 96,
+          "tokens_per_second": 14.82,
+          "error": ""
+        }
+      ],
+      "avg_latency_ms": 6364.74,
+      "std_latency_ms": 254.38,
+      "avg_tokens_per_second": 15.11,
+      "response_non_empty_rate": 0.875,
+      "structured_success_rate": 1.0,
+      "load_error": "",
+      "precheck": {
+        "ready": true,
+        "load_confirmed": true,
+        "health_available": true,
+        "smoke_test_success": true,
+        "health_latency_ms": 10.87,
+        "smoke_test_preview": "READY The user says \"Reply with exactly READY.\" So I should reply with the word ...",
+        "smoke_test_completion_tokens": 38,
+        "error": ""
+      }
+    }
+  ]
+}

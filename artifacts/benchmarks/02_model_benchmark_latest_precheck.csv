@@ -1,0 +1,4 @@
+model_name,precheck_ready,load_confirmed,health_available,smoke_test_success,health_latency_ms,smoke_test_preview,precheck_error
+Qwen3.5-4B,True,True,True,True,169.78,Thinking Process: 1. **Analyze the Request:** The user is asking me to reply wit...,
+Gemma-4-E4B-IT,True,True,True,True,4.74,READY,
+GPT-OSS-Nano,True,True,True,True,10.87,"READY The user says ""Reply with exactly READY."" So I should reply with the word ...",

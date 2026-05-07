@@ -1,0 +1,4 @@
+model_name,available,precheck_ready,avg_latency_ms,std_latency_ms,avg_tokens_per_second
+Qwen3.5-4B,True,True,7661.1,133.85,12.54
+Gemma-4-E4B-IT,True,True,2304.6,31.39,11.28
+GPT-OSS-Nano,True,True,6364.74,254.38,15.11

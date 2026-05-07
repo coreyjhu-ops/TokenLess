@@ -1,0 +1,32 @@
+# TokenLess model configuration.
+# Local inference: LM Studio through an OpenAI-compatible API.
+# Evaluation layer: OpenAI GPT-4o and Google Gemini.
+
+# Model-selection result based on 02_model_benchmark from 2026-04-09:
+#   Primary: Gemma-4-E4B-IT, lowest latency at 2.3s, stable structured output.
+#   Backup: Qwen3.5-4B, stable but roughly 3x slower.
+#   Conditional: GPT-OSS-Nano, high throughput but less consistent on multilingual input.
+
+planning:
+  provider: "lmstudio"
+  model: "gemma-4-e4b-it"
+  base_url: "http://localhost:1234/v1"
+  temperature: 0.3
+
+optimization:
+  provider: "lmstudio"
+  model: "gemma-4-e4b-it"
+  base_url: "http://localhost:1234/v1"
+  temperature: 0.2
+
+evaluation:
+  judges:
+    - provider: "openai"
+      model: "gpt-4o"
+      temperature: 0.0
+    - provider: "google"
+      model: "gemini-2.5-flash"
+      temperature: 0.0
+
+tokenizer:
+  default: "cl100k_base"  # GPT-4 tokenizer

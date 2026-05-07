@@ -1,0 +1,25 @@
+{
+  "vibe_coding": {
+    "required_fields": ["language", "framework", "functionality", "constraints"],
+    "recommended_fields": ["output_format", "code_style", "error_handling", "test_required"],
+    "optional_fields": ["performance_requirements", "target_environment", "existing_codebase_context"],
+    "template_sections": ["role", "tech_stack", "requirements", "constraints", "output_format"],
+    "compression_hints": [
+      "Avoid explaining basic programming concepts unless the user asks for beginner guidance",
+      "Use standard technical terms instead of long descriptions",
+      "Omit obvious implementation steps when they do not affect requirements",
+      "Use JSON Schema or code comments instead of long natural-language format instructions",
+      "Use precise version numbers instead of vague latest-version language"
+    ],
+    "scene_keywords": [
+      "write", "implement", "build", "create", "code", "function", "class",
+      "component", "api", "script", "module", "algorithm", "refactor", "fix"
+    ],
+    "example_gaps": {
+      "missing_language": "The user did not specify a programming language, so executable code cannot be targeted reliably",
+      "missing_framework": "The framework is unspecified, so the AI may choose a stack that does not fit the project",
+      "missing_functionality": "The core feature description is vague, which can produce output that misses expectations",
+      "missing_constraints": "Constraints such as performance or library versions are missing, so the optimization direction is unclear"
+    }
+  }
+}

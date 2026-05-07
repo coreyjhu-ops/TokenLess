@@ -1,0 +1,4 @@
+model_name,available,precheck_ready,structured_success,returned_content,error
+Qwen3.5-4B,True,True,True,"{""intent"": ""prompt optimization"", ""keywords"": [""faster"", ""shrink"", ""prompts"", ""requirements""], ""complexity"": ""medium""}",
+Gemma-4-E4B-IT,True,True,True,"{""intent"": ""Prompt Optimization"", ""keywords"": [""shrink prompts"", ""long prompts"", ""essential requirements"", ""faster way""], ""complexity"": ""medium""}",
+GPT-OSS-Nano,True,True,True,"{""intent"": ""Intent"", ""keywords"": [""sh"", ""..."", ""analysis""], ""complexity"": ""high""}",
