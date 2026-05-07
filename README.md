@@ -261,6 +261,8 @@ The system performs well on prompts with 20+ tokens that contain recoverable gap
 
 ## Artifact Snapshot
 
+This section satisfies the final-project artifact snapshot requirement through a concise sample input/output walkthrough. A standalone version is also available at [`artifacts/artifact_snapshot.md`](artifacts/artifact_snapshot.md), with the longer transcript and metrics in [`artifacts/sample_output.md`](artifacts/sample_output.md).
+
 ### Sample Input -> Output
 
 **User input (raw):**
@@ -311,7 +313,7 @@ Implement the WebSocket connection and alert logic first; the chart component is
 
 The Streamlit app (`streamlit run app.py`) opens to a chat interface. The user types a description, answers 5-10 follow-up questions from the Mentor, confirms, and the optimization pipeline runs automatically. The main result panel shows token estimates, quality score, and the final structured prompt with a one-click copy button. Advanced details (judge votes, token ledger, structure map) are hidden in an expandable section.
 
-For a complete session transcript with metrics, see [`artifacts/sample_output.md`](artifacts/sample_output.md). To see the live app, follow the setup instructions above and run `streamlit run app.py`.
+For the standalone artifact snapshot, see [`artifacts/artifact_snapshot.md`](artifacts/artifact_snapshot.md). For a complete session transcript with metrics, see [`artifacts/sample_output.md`](artifacts/sample_output.md). To see the live app, follow the setup instructions above and run `streamlit run app.py`.
 
 ---
 
