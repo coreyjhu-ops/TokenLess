@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TokenLess — Vibe Coding Prompt Mentor</title>
+  <style>
+    :root {
+      --bg-page:         #ffffff;
+      --bg-warm:         #f6f5f4;
+      --bg-cool:         #f5f5f7;
+      --bg-dark:         #000000;
+      --bg-card:         #ffffff;
+      --bg-card-warm:    #f6f5f4;
+      --text-primary:    #1d1d1f;
+      --text-primary-dk: #ffffff;
+      --text-secondary:  #615d59;
+      --text-muted:      #a39e98;
+      --border-default:  rgba(0,0,0,0.1);
+      --accent:          #0071e3;
+      --accent-link:     #0066cc;
+      --badge-bg:        #f2f9ff;
+      --badge-text:      #097fe8;
+      --success:         #1aae39;
+      --warning:         #dd5b00;
+      --font-heading: "Anthropic Serif", Georgia, serif;
+      --font-body:    "Anthropic Sans", Arial, system-ui, sans-serif;
+      --font-mono:    "Anthropic Mono", "Courier New", monospace;
+      --r-std:  8px;
+      --r-large: 12px;
+      --r-pill: 980px;
+      --shadow-card: rgba(0,0,0,0.04) 0px 4px 18px,rgba(0,0,0,0.027) 0px 2.025px 7.84688px,rgba(0,0,0,0.02) 0px 0.8px 2.925px,rgba(0,0,0,0.01) 0px 0.175px 1.04062px;
+      --shadow-deep: rgba(0,0,0,0.01) 0px 1px 3px,rgba(0,0,0,0.02) 0px 3px 7px,rgba(0,0,0,0.02) 0px 7px 15px,rgba(0,0,0,0.04) 0px 14px 28px,rgba(0,0,0,0.05) 0px 23px 52px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--text-primary); background: var(--bg-page); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .section { padding: 96px 0; }
+    .section--warm { background: var(--bg-warm); }
+    .section--cool { background: var(--bg-cool); }
+    .section--dark { background: var(--bg-dark); }
+
+    /* Typography */
+    .t-hero    { font-family:var(--font-heading);font-size:64px;font-weight:500;line-height:1.10;color:var(--text-primary); }
+    .t-section { font-family:var(--font-heading);font-size:52px;font-weight:500;line-height:1.20;color:var(--text-primary); }
+    .t-h3      { font-family:var(--font-heading);font-size:32px;font-weight:500;line-height:1.10;color:var(--text-primary); }
+    .t-card-title { font-family:var(--font-heading);font-size:20.8px;font-weight:500;line-height:1.20;color:var(--text-primary); }
+    .t-body-lg { font-family:var(--font-body);font-size:20px;font-weight:400;line-height:1.60;color:var(--text-secondary); }
+    .t-body    { font-family:var(--font-body);font-size:16px;font-weight:400;line-height:1.60;color:var(--text-secondary); }
+    .t-label   { font-family:var(--font-body);font-size:12px;font-weight:500;line-height:1.25;letter-spacing:0.12px;color:var(--text-primary); }
+    .t-overline{ font-family:var(--font-body);font-size:10px;font-weight:400;line-height:1.60;letter-spacing:0.5px;text-transform:uppercase;color:var(--text-muted); }
+    .t-mono    { font-family:var(--font-mono);font-size:14px;line-height:1.6; }
+
+    /* Badge */
+    .badge { display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:var(--r-pill);font-family:var(--font-body);font-size:12px;font-weight:500;line-height:1.25; }
+    .badge--info    { background:var(--badge-bg);color:var(--badge-text); }
+    .badge--success { background:#edfbf1;color:var(--success); }
+    .badge--warning { background:#fff3ec;color:var(--warning); }
+    .badge--neutral { background:rgba(0,0,0,0.06);color:var(--text-secondary); }
+
+    /* Buttons */
+    .btn { display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-size:16px;font-weight:500;line-height:1.25;border-radius:var(--r-std);cursor:pointer;transition:background 0.15s,color 0.15s;border:1px solid transparent; }
+    .btn--primary { background:var(--accent);color:#fff;padding:8px 15px; }
+    .btn--primary:hover { background:#0077ed; }
+    .btn--lang { background:transparent;color:var(--text-primary);padding:5px 12px;font-size:13px;border-radius:6px;transition:all 0.15s; }
+    .btn--lang:hover { background:rgba(0,0,0,0.06); }
+    .btn--lang.active { background:var(--accent);color:#fff; }
+
+    /* Card */
+    .card { background:var(--bg-card);border:1px solid var(--border-default);border-radius:var(--r-std);box-shadow:var(--shadow-card);padding:24px; }
+    .card--warm { background:var(--bg-card-warm); }
+    .card--featured { border-radius:var(--r-large); }
+
+    /* Nav */
+    .nav { position:fixed;top:0;left:0;right:0;z-index:100;height:48px;background:rgba(255,255,255,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border-default);display:flex;align-items:center; }
+    .nav__inner { max-width:1200px;margin:0 auto;padding:0 32px;width:100%;display:flex;align-items:center;justify-content:space-between; }
+    .nav__logo { font-family:var(--font-heading);font-size:18px;font-weight:500;color:var(--text-primary); }
+    .nav__actions { display:flex;align-items:center;gap:12px; }
+    .lang-switcher { display:flex;align-items:center;gap:2px;background:rgba(0,0,0,0.05);border-radius:8px;padding:3px; }
+
+    /* Section header */
+    .section-header { margin-bottom:56px; }
+    .section-header--center { text-align:center; }
+    .section-header .t-overline { margin-bottom:12px; }
+    .section-header .t-section { margin-bottom:16px; }
+    .section-header--center .t-body-lg { margin:0 auto;max-width:600px; }
+
+    /* Lang */
+    [data-lang] { display:none; }
+    span[data-lang].lang-active { display:inline; }
+    div[data-lang].lang-active, p[data-lang].lang-active { display:block; }
+
+    /* ─── HERO ─────────────────────────────────────────── */
+    .hero { padding:144px 0 96px;text-align:center;position:relative;overflow:hidden; }
+    .hero__badge { margin-bottom:24px; }
+    .hero__title { font-family:var(--font-heading);font-size:76px;font-weight:500;line-height:1.06;color:var(--text-primary);margin-bottom:24px;letter-spacing:-1px; }
+    .hero__sub { font-size:20px;color:var(--text-secondary);max-width:620px;margin:0 auto 48px;line-height:1.6; }
+    .hero__stats { display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:840px;margin:0 auto 56px; }
+    .stat-card { background:var(--bg-card);border:1px solid var(--border-default);border-radius:var(--r-std);box-shadow:var(--shadow-card);padding:28px 24px;text-align:center;transition:transform 0.2s,box-shadow 0.2s; }
+    .stat-card:hover { transform:translateY(-2px);box-shadow:var(--shadow-deep); }
+    .stat-card__number { font-family:var(--font-heading);font-size:40px;font-weight:500;color:var(--text-primary);line-height:1;margin-bottom:8px; }
+    .stat-card__label { font-size:13px;color:var(--text-secondary); }
+
+    /* Hero animated prompt flow */
+    .hero__flow { max-width:760px;margin:0 auto;position:relative; }
+    .flow-line { display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:var(--r-std);margin-bottom:8px;opacity:0;transform:translateY(8px);transition:opacity 0.5s,transform 0.5s; }
+    .flow-line.visible { opacity:1;transform:translateY(0); }
+    .flow-line--user { background:var(--badge-bg);border:1px solid rgba(0,113,227,0.12);justify-content:flex-end;text-align:right; }
+    .flow-line--ai   { background:var(--bg-warm);border:1px solid var(--border-default);justify-content:flex-start; }
+    .flow-line__avatar { width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0; }
+    .flow-line__avatar--user { background:var(--accent);color:#fff;order:2; }
+    .flow-line__avatar--ai   { background:#1d1d1f;color:#fff; }
+    .flow-line__text { font-family:var(--font-mono);font-size:12px;color:var(--text-primary);line-height:1.5;max-width:520px; }
+    .flow-arrow { text-align:center;color:var(--accent);font-size:18px;margin:4px 0;opacity:0;transition:opacity 0.4s; }
+    .flow-arrow.visible { opacity:1; }
+
+    /* ─── SECTION 2 CONTEXT ─── */
+    .context-layout { display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start; }
+    .context-right { display:flex;flex-direction:column;gap:16px; }
+    .context-card { background:var(--bg-card);border:1px solid var(--border-default);border-radius:var(--r-std);box-shadow:var(--shadow-card);padding:24px;transition:transform 0.2s,box-shadow 0.2s; }
+    .context-card:hover { transform:translateY(-2px);box-shadow:var(--shadow-deep); }
+    .context-card .t-overline { margin-bottom:8px; }
+    .context-card .t-card-title { margin-bottom:8px; }
+
+    /* Token waste animated chart */
+    .waste-chart { margin-top:40px;background:var(--bg-warm);border-radius:var(--r-std);padding:24px;border:1px solid var(--border-default); }
+    .waste-chart__title { font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:20px; }
+    .waste-bars { display:flex;flex-direction:column;gap:12px; }
+    .waste-bar-row { display:flex;align-items:center;gap:12px; }
+    .waste-bar-label { font-size:12px;color:var(--text-secondary);width:88px;flex-shrink:0;text-align:right; }
+    .waste-bar-track { flex:1;height:8px;background:rgba(0,0,0,0.07);border-radius:4px;overflow:hidden; }
+    .waste-bar-fill { height:100%;border-radius:4px;width:0%;transition:width 1.2s cubic-bezier(0.16,1,0.3,1); }
+    .waste-bar-fill--bad  { background:var(--warning); }
+    .waste-bar-fill--ok   { background:#f5c842; }
+    .waste-bar-fill--good { background:var(--success); }
+    .waste-bar-val { font-family:var(--font-mono);font-size:12px;color:var(--text-primary);width:48px; }
+
+    /* ─── PIPELINE ─── */
+    .pipeline-wrapper { overflow-x:auto;padding-bottom:8px; }
+    .pipeline { display:flex;align-items:stretch;gap:0;min-width:700px; }
+    .pipeline-step { flex:1;background:var(--bg-card);border:1px solid var(--border-default);padding:28px 24px;position:relative;transition:box-shadow 0.2s,transform 0.2s; }
+    .pipeline-step:first-child { border-radius:var(--r-std) 0 0 var(--r-std); }
+    .pipeline-step:last-child  { border-radius:0 var(--r-std) var(--r-std) 0; }
+    .pipeline-step+.pipeline-step { border-left:none; }
+    .pipeline-step:hover { box-shadow:var(--shadow-deep);z-index:2;transform:translateY(-3px); }
+    .pipeline-step__num { font-family:var(--font-mono);font-size:10px;color:var(--accent);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px; }
+    .pipeline-step__title { font-family:var(--font-heading);font-size:18px;font-weight:500;color:var(--text-primary);margin-bottom:10px;line-height:1.2; }
+    .pipeline-step__modules { font-family:var(--font-mono);font-size:11px;color:var(--text-secondary);line-height:1.7;margin-bottom:14px; }
+    .pipeline-step__model { display:inline-flex;align-items:center;gap:4px;background:var(--badge-bg);color:var(--badge-text);border-radius:var(--r-pill);padding:3px 10px;font-size:11px;font-weight:500; }
+    .pipeline-arrow { position:absolute;right:-14px;top:50%;transform:translateY(-50%);z-index:3;width:28px;height:28px;background:var(--bg-page);border:1px solid var(--border-default);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-card); }
+    .pipeline-step:last-child .pipeline-arrow { display:none; }
+
+    /* Pipeline animated token counter */
+    .pipeline-token-anim { margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:24px; }
+    .token-gauge { background:var(--bg-card);border:1px solid var(--border-default);border-radius:var(--r-std);box-shadow:var(--shadow-card);padding:24px;text-align:center; }
+    .token-gauge__label { font-size:11px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px; }
+    .token-gauge__ring { position:relative;width:100px;height:100px;margin:0 auto 12px; }
+    .token-gauge__ring svg { transform:rotate(-90deg); }
+    .token-gauge__ring-text { position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center; }
+    .token-gauge__val { font-family:var(--font-heading);font-size:22px;font-weight:500;color:var(--text-primary);line-height:1; }
+    .token-gauge__unit { font-size:10px;color:var(--text-muted); }
+    .token-gauge__sub { font-size:12px;color:var(--text-secondary); }
+
+    /* Model selection table */
+    .model-section { margin-top:48px; }
+    .model-table-wrap { overflow-x:auto; }
+    .model-table { width:100%;border-collapse:collapse;font-size:14px;background:var(--bg-card);border-radius:var(--r-std);overflow:hidden;box-shadow:var(--shadow-card);border:1px solid var(--border-default); }
+    .model-table thead { background:var(--bg-warm); }
+    .model-table th { padding:12px 16px;text-align:left;font-size:11px;font-weight:500;letter-spacing:0.12px;color:var(--text-secondary);text-transform:uppercase;border-bottom:1px solid var(--border-default); }
+    .model-table td { padding:13px 16px;color:var(--text-primary);border-bottom:1px solid rgba(0,0,0,0.04);vertical-align:middle;font-size:13px; }
+    .model-table tr:last-child td { border-bottom:none; }
+    .model-table tr.selected td { background:#f0f7ff; }
+    .model-table .mono { font-family:var(--font-mono);font-size:12px;color:var(--text-secondary); }
+
+    /* pipeline desc */
+    .pipeline-desc { display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px; }
+    .pipeline-desc .card--warm { border:none;box-shadow:none; }
+    .pipeline-desc .t-card-title { margin-bottom:10px; }
+
+    /* ─── EVALUATION ─── */
+    .eval-layout { display:grid;grid-template-columns:1fr 1.5fr;gap:48px;align-items:start; }
+    .rubric-list { display:flex;flex-direction:column;gap:12px; }
+    .rubric-item { background:var(--bg-card);border:1px solid var(--border-default);border-radius:var(--r-std);box-shadow:var(--shadow-card);padding:16px 20px;display:flex;align-items:center;gap:16px; }
+    .rubric-item__pct { font-family:var(--font-heading);font-size:28px;font-weight:500;color:var(--accent);min-width:60px;line-height:1; }
+    .rubric-item__info .t-label { margin-bottom:2px; }
+    .eval-table { width:100%;border-collapse:collapse;font-size:14px;background:var(--bg-card);border-radius:var(--r-std);overflow:hidden;box-shadow:var(--shadow-card);border:1px solid var(--border-default); }
+    .eval-table thead { background:var(--bg-warm); }
+    .eval-table th { padding:14px 16px;text-align:left;font-size:11px;font-weight:500;letter-spacing:0.12px;color:var(--text-secondary);text-transform:uppercase;border-bottom:1px solid var(--border-default); }
+    .eval-table td { padding:14px 16px;color:var(--text-primary);border-bottom:1px solid rgba(0,0,0,0.05);vertical-align:middle; }
+    .eval-table tr:last-child td { border-bottom:none; }
+    .eval-table td.mono { font-family:var(--font-mono);font-size:13px;color:var(--text-secondary); }
+    .eval-table td.score { font-family:var(--font-heading);font-size:18px;font-weight:500; }
+    .eval-baseline { margin-top:24px;padding:20px 24px;background:var(--bg-card);border:1px solid var(--border-default);border-radius:var(--r-std);box-shadow:var(--shadow-card); }
+
+    /* Radar chart */
+    .radar-wrap { display:flex;justify-content:center;margin-top:32px; }
+    .radar-wrap svg text { font-family:var(--font-body); }
+
+    /* Score bar animated */
+    .score-bars { margin-top:32px;display:flex;flex-direction:column;gap:10px; }
+    .score-bar-row { display:flex;align-items:center;gap:12px; }
+    .score-bar-name { font-size:12px;color:var(--text-secondary);width:110px;flex-shrink:0;text-align:right; }
+    .score-bar-track { flex:1;height:6px;background:rgba(0,0,0,0.07);border-radius:3px;overflow:hidden; }
+    .score-bar-fill { height:100%;border-radius:3px;width:0%;transition:width 1.4s cubic-bezier(0.16,1,0.3,1); }
+    .score-bar-val { font-family:var(--font-mono);font-size:12px;color:var(--text-primary);width:36px; }
+
+    /* ─── SNAPSHOT: Streamlit faithful replica ─── */
+    /* Full-app chrome wrapper */
+    .st-app-shell { display:grid;grid-template-columns:240px 1fr;grid-template-rows:auto 1fr;height:680px;border:1px solid var(--border-default);border-radius:var(--r-large);box-shadow:var(--shadow-deep);overflow:hidden;background:var(--bg-page); }
+    /* Full-width titlebar spanning both columns */
+    .st-titlebar { grid-column:1 / -1;height:40px;background:var(--bg-warm);border-bottom:1px solid var(--border-default);display:flex;align-items:center;padding:0 16px;gap:0;flex-shrink:0;position:relative; }
+    .st-titlebar-dots { display:flex;align-items:center;gap:6px; }
+    .st-titlebar-dot { width:12px;height:12px;border-radius:50%;flex-shrink:0; }
+    .st-titlebar-title { font-size:13px;font-weight:500;color:var(--text-secondary);position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap; }
+
+    /* Sidebar */
+    .st-sidebar { background:var(--bg-warm);border-right:1px solid var(--border-default);padding:20px 16px;display:flex;flex-direction:column;gap:0;overflow-y:auto; }
+    .st-sidebar-logo { font-family:var(--font-heading);font-size:20px;font-weight:500;color:var(--text-primary);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border-default); }
+    .st-alert { border:1px solid var(--border-default);border-radius:var(--r-std);box-shadow:var(--shadow-card);padding:10px 12px;font-size:13px;margin-bottom:12px;display:flex;align-items:flex-start;gap:8px; }
+    .st-alert--success { background:#f0fff4;border-color:rgba(26,174,57,0.25);color:#0d7a2e; }
+    .st-alert--error   { background:#fff3ec;border-color:rgba(221,91,0,0.25);color:#b54300; }
+    .st-alert code { font-family:var(--font-mono);font-size:11px;background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px; }
+    .st-checkbox { display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);margin-bottom:12px;cursor:default; }
+    .st-checkbox-box { width:16px;height:16px;border:2px solid var(--border-default);border-radius:3px;flex-shrink:0;background:var(--bg-page); }
+    .st-btn { width:100%;padding:8px 12px;border:1px solid transparent;border-radius:var(--r-std);background:rgba(0,0,0,0.05);color:var(--text-primary);font:500 13px/1.25 var(--font-body);cursor:pointer;text-align:center;margin-bottom:12px; }
+    .st-divider { height:1px;background:var(--border-default);margin:8px 0 12px; }
+    .st-caption { font-size:11px;color:var(--text-muted);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px; }
+    .st-sidebar-text { font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:2px; }
+    .st-sidebar-text code { font-family:var(--font-mono);font-size:11px;background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px; }
+
+    /* Main content area */
+    .st-main { display:flex;flex-direction:column;overflow:hidden; }
+    .st-content { flex:1;overflow-y:auto;padding:28px 24px 0;scroll-behavior:smooth; }
+
+    /* Page header (tl-header replica) */
+    .st-page-header { max-width:860px;padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--border-default); }
+    .st-kicker { display:inline-flex;align-items:center;min-height:22px;padding:3px 8px;border-radius:980px;background:var(--badge-bg);color:var(--badge-text);font:400 10px/1.6 var(--font-body);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px; }
+    .st-h1 { font-family:var(--font-heading);font-size:52px;font-weight:500;line-height:1.10;color:var(--text-primary);margin:0 0 10px; }
+    .st-subtitle { font:400 18px/1.6 var(--font-body);color:var(--text-secondary);margin:0; }
+
+    /* Chat messages (stChatMessage replica) */
+    .st-chat-area { display:flex;flex-direction:column;gap:12px;max-width:860px;margin-bottom:16px; }
+    .st-chat-msg { border:1px solid var(--border-default);border-radius:var(--r-std);background:var(--bg-card);box-shadow:var(--shadow-card);padding:14px 16px;opacity:0;transform:translateY(5px);transition:opacity 0.4s,transform 0.4s; }
+    .st-chat-msg.shown { opacity:1;transform:translateY(0); }
+    .st-chat-msg--user { background:var(--bg-warm); }
+    .st-chat-msg-header { display:flex;align-items:center;gap:8px;margin-bottom:8px; }
+    .st-avatar { width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0; }
+    .st-avatar--ai   { background:#1d1d1f;color:#fff; }
+    .st-avatar--user { background:var(--accent);color:#fff; }
+    .st-avatar-name { font-size:12px;font-weight:600;color:var(--text-primary); }
+    .st-msg-body { font:400 14px/1.6 var(--font-body);color:var(--text-secondary);padding-left:34px; }
+    .st-msg-body strong { color:var(--text-primary); }
+
+    /* Typing indicator */
+    .typing { display:flex;gap:4px;align-items:center;padding:4px 0;padding-left:34px; }
+    .typing span { width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:bounce 1.2s infinite; }
+    .typing span:nth-child(2) { animation-delay:0.2s; }
+    .typing span:nth-child(3) { animation-delay:0.4s; }
+    @keyframes bounce { 0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)} }
+
+    /* st.divider */
+    .st-rule { height:1px;background:var(--border-default);max-width:860px;margin:20px 0; }
+
+    /* Token estimate section */
+    .st-subheader { font-family:var(--font-heading);font-size:24px;font-weight:500;color:var(--text-primary);max-width:860px;margin:0 0 6px; }
+    .st-muted-desc { font:400 14px/1.6 var(--font-body);color:var(--text-secondary);max-width:860px;margin:0 0 16px; }
+    .st-metrics-row { display:grid;gap:12px;max-width:860px;margin-bottom:12px; }
+    .st-metrics-row--2 { grid-template-columns:1fr 1fr; }
+    .st-metrics-row--4 { grid-template-columns:1fr 1fr 1fr 1fr; }
+    .st-metric { background:var(--bg-card);border:1px solid var(--border-default);border-radius:var(--r-std);box-shadow:var(--shadow-card);padding:20px; }
+    .st-metric__label { font:500 11px/1.25 var(--font-body);letter-spacing:0.12px;color:var(--text-secondary);text-transform:uppercase;margin-bottom:8px; }
+    .st-metric__value { font-family:var(--font-heading);font-size:28px;font-weight:500;line-height:1.1;color:var(--text-primary); }
+    /* Token comparison table */
+    .st-token-compare { max-width:860px;border:1px solid var(--border-default);border-radius:var(--r-std);overflow:hidden;box-shadow:var(--shadow-card);margin-bottom:14px; }
+    .st-token-compare-head { display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--bg-warm);border-bottom:1px solid var(--border-default);padding:10px 16px;font:600 11px/1.25 var(--font-body);letter-spacing:0.5px;text-transform:uppercase;color:var(--text-secondary); }
+    .st-token-compare-row { display:grid;grid-template-columns:1fr 1fr 1fr;padding:10px 16px;border-bottom:1px solid var(--border-default);font-size:13px;color:var(--text-primary);background:var(--bg-card);transition:background 0.15s; }
+    .st-token-compare-row:last-child { border-bottom:none; }
+    .st-token-compare-row:hover { background:var(--bg-warm); }
+    .st-token-compare-row .label { color:var(--text-secondary); }
+    .st-token-compare-row .before { font-family:var(--font-mono);font-size:13px; }
+    .st-token-compare-row .after  { font-family:var(--font-mono);font-size:13px;color:#0d7a2e;font-weight:600; }
+    .st-token-compare-row .after.highlight { color:#0071e3;font-weight:700; }
+    .st-savings-banner { max-width:860px;background:linear-gradient(135deg,#f0fff4 0%,#e8f5e9 100%);border:1px solid rgba(26,174,57,0.3);border-radius:var(--r-std);padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between; }
+    .st-savings-banner .savings-label { font:500 13px/1.4 var(--font-body);color:#0d7a2e; }
+    .st-savings-banner .savings-num { font-family:var(--font-heading);font-size:26px;font-weight:600;color:#0d7a2e; }
+    .st-savings-badge { display:inline-flex;align-items:center;padding:3px 10px;border-radius:980px;background:#0d7a2e;color:#fff;font:600 11px/1.6 var(--font-body);letter-spacing:0.5px;text-transform:uppercase; }
+
+    /* Final prompt copy block */
+    .st-copy-shell { max-width:860px;border:1px solid var(--border-default);border-radius:var(--r-std);overflow:hidden;background:var(--bg-card);box-shadow:var(--shadow-card);margin-bottom:16px; }
+    .st-copy-bar { display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border-default);background:var(--bg-warm); }
+    .st-copy-label { font:500 12px/1.25 var(--font-body);color:var(--text-secondary);letter-spacing:0.12px; }
+    .st-copy-btn { min-width:64px;padding:5px 12px;border:1px solid transparent;border-radius:var(--r-std);background:var(--accent);color:#fff;font:500 13px/1.25 var(--font-body);cursor:pointer; }
+    .st-copy-btn:hover { background:#0077ed; }
+    .st-pre { max-height:400px;overflow-y:auto;padding:14px 16px;margin:0;white-space:pre-wrap;font:400 12px/1.6 var(--font-mono);color:var(--text-primary);background:var(--bg-card); }
+
+    /* Quality summary */
+    .st-expander { max-width:860px;border:1px solid var(--border-default);border-radius:var(--r-std);box-shadow:var(--shadow-card);background:var(--bg-card);margin-bottom:20px;overflow:hidden; }
+    .st-expander-header { display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none; }
+    .st-expander-title { font:500 14px/1.6 var(--font-body);color:var(--text-primary); }
+    .st-expander-chevron { font-size:12px;color:var(--text-muted);transition:transform 0.2s; }
+    .st-expander.open .st-expander-chevron { transform:rotate(180deg); }
+    .st-expander-body { display:none;padding:0 16px 16px;border-top:1px solid var(--border-default); }
+    .st-expander.open .st-expander-body { display:block; }
+    .st-expander-body p { font:400 13px/1.6 var(--font-body);color:var(--text-secondary);margin:10px 0 6px; }
+    .st-expander-body li { font:400 13px/1.6 var(--font-body);color:var(--text-secondary);margin-left:16px; }
+
+    /* Chat input bar at bottom */
+    .st-chat-input-bar { border-top:1px solid var(--border-default);padding:12px 24px;background:var(--bg-page);display:flex;align-items:center;gap:10px;flex-shrink:0; }
+    .st-chat-input-mock { flex:1;max-width:836px;height:44px;background:#fafafc;border:3px solid rgba(0,0,0,0.04);border-radius:11px;padding:0 14px;font:400 14px/1 var(--font-body);color:rgba(0,0,0,0.48);display:flex;align-items:center; }
+    .st-send-btn { width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer; }
+
+    /* Pipeline status pills */
+    .st-pipeline-status { max-width:860px;display:flex;flex-direction:column;gap:6px;margin-bottom:12px; }
+    .st-status-pill { display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--r-pill);font-size:12px;font-weight:500; }
+    .st-status-pill--info    { background:var(--badge-bg);color:var(--badge-text); }
+    .st-status-pill--success { background:#edfbf1;color:var(--success); }
+
+    /* Footer */
+    .footer { background:var(--bg-dark);padding:48px 0;text-align:center;border-top:1px solid rgba(255,255,255,0.08); }
+    .footer__brand { font-family:var(--font-heading);font-size:22px;font-weight:500;color:var(--text-primary-dk);margin-bottom:12px; }
+    .footer__meta { font-size:14px;color:rgba(255,255,255,0.5);line-height:1.8; }
+    .footer__divider { width:40px;height:1px;background:rgba(255,255,255,0.15);margin:20px auto; }
+
+    /* Scroll-reveal */
+    .reveal { opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease; }
+    .reveal.in-view { opacity:1;transform:translateY(0); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:5px;height:5px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.15);border-radius:3px; }
+
+    /* Responsive */
+    @media(max-width:900px){
+      .hero__title{font-size:48px}
+      .hero__stats{grid-template-columns:1fr;max-width:400px}
+      .context-layout{grid-template-columns:1fr;gap:40px}
+      .pipeline{flex-direction:column}
+      .pipeline-step{border-radius:0!important;border-left:1px solid var(--border-default)!important}
+      .pipeline-step:first-child{border-radius:var(--r-std) var(--r-std) 0 0!important}
+      .pipeline-step:last-child{border-radius:0 0 var(--r-std) var(--r-std)!important}
+      .pipeline-arrow{display:none}
+      .pipeline-desc{grid-template-columns:1fr}
+      .pipeline-token-anim{grid-template-columns:1fr}
+      .eval-layout{grid-template-columns:1fr}
+      .snapshot-layout{grid-template-columns:1fr}
+      .t-section{font-size:36px}
+    }
+    @media(max-width:600px){
+      .container{padding:0 16px}
+      .section{padding:64px 0}
+      .hero{padding:100px 0 64px}
+      .hero__title{font-size:36px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" role="navigation">
+  <div class="nav__inner">
+    <span class="nav__logo">TokenLess</span>
+    <div class="nav__actions">
+      <div class="lang-switcher" role="group" aria-label="Language switcher">
+        <button class="btn btn--lang active" id="btn-en" onclick="setLang('en')" aria-pressed="true">EN</button>
+        <button class="btn btn--lang" id="btn-zh" onclick="setLang('zh')" aria-pressed="false">中文</button>
+      </div>
+      <a href="https://github.com/coreyjhu-ops/TokenLess.git" class="btn btn--primary" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__badge reveal">
+      <span class="badge badge--info">
+        <span data-lang="en" class="lang-active">JHU ISAI · Generative AI · Spring 2026</span>
+        <span data-lang="zh">约翰霍普金斯大学 · 生成式AI · 2026 春季</span>
+      </span>
+    </div>
+
+    <h1 class="hero__title reveal" style="transition-delay:0.1s">TokenLess</h1>
+
+    <p class="hero__sub reveal" style="transition-delay:0.18s">
+      <span data-lang="en" class="lang-active">A chat-first prompt mentor that transforms vague developer requests into precise, structured AI coding prompts — measured and evaluated.</span>
+      <span data-lang="zh">以对话为核心的 Prompt 优化助手，将模糊的开发需求转化为精准的结构化 AI 编程提示词，可量化、可评估。</span>
+    </p>
+
+    <div class="hero__stats reveal" style="transition-delay:0.26s">
+      <div class="stat-card">
+        <div class="stat-card__number" id="count-score">0</div>
+        <div class="stat-card__label">
+          <span data-lang="en" class="lang-active">Quality Score (Dual-Judge)</span>
+          <span data-lang="zh">质量评分（双裁判）</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__number">4</div>
+        <div class="stat-card__label">
+          <span data-lang="en" class="lang-active">AI Pipeline Layers</span>
+          <span data-lang="zh">AI 四层流水线</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__number" id="count-compress">0%</div>
+        <div class="stat-card__label">
+          <span data-lang="en" class="lang-active">Max Token Compression</span>
+          <span data-lang="zh">最高 Token 压缩率</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animated prompt flow -->
+    <div class="hero__flow reveal" style="transition-delay:0.34s" id="heroFlow"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 2: CONTEXT ═══════════════ -->
+<section class="section section--warm">
+  <div class="container">
+    <div class="context-layout">
+      <div class="context-left">
+        <p class="t-overline reveal" style="margin-bottom:12px;">
+          <span data-lang="en" class="lang-active">01 — Context, User &amp; Problem</span>
+          <span data-lang="zh">01 — 背景、用户与问题</span>
+        </p>
+        <h2 class="t-section reveal" style="margin-bottom:24px;transition-delay:0.1s">
+          <span data-lang="en" class="lang-active">The prompt is the highest-leverage input in vibe coding.</span>
+          <span data-lang="zh">Prompt 是 Vibe Coding 中影响力最大的单一输入。</span>
+        </h2>
+        <p class="t-body-lg reveal" style="transition-delay:0.18s">
+          <span data-lang="en" class="lang-active">Vague prompts force the AI to infer intent, resolve ambiguity, and backtrack — wasting tokens and developer time on every single run.</span>
+          <span data-lang="zh">模糊 prompt 迫使 AI 推断意图、消解歧义并反复修正，每次运行都在白白消耗 token 和开发者时间。</span>
+        </p>
+
+        <!-- Animated waste chart -->
+        <div class="waste-chart reveal" style="transition-delay:0.26s" id="wasteChart">
+          <div class="waste-chart__title">
+            <span data-lang="en" class="lang-active">Token Waste Without Prompt Optimization</span>
+            <span data-lang="zh">未优化 Prompt 的 Token 浪费率</span>
+          </div>
+          <div class="waste-bars">
+            <div class="waste-bar-row">
+              <span class="waste-bar-label" style="font-size:11px">
+                <span data-lang="en" class="lang-active">Vague prompt</span>
+                <span data-lang="zh">模糊 Prompt</span>
+              </span>
+              <div class="waste-bar-track"><div class="waste-bar-fill waste-bar-fill--bad" data-target="82"></div></div>
+              <span class="waste-bar-val">82%</span>
+            </div>
+            <div class="waste-bar-row">
+              <span class="waste-bar-label" style="font-size:11px">
+                <span data-lang="en" class="lang-active">Single rewrite</span>
+                <span data-lang="zh">单次改写</span>
+              </span>
+              <div class="waste-bar-track"><div class="waste-bar-fill waste-bar-fill--ok" data-target="45"></div></div>
+              <span class="waste-bar-val">45%</span>
+            </div>
+            <div class="waste-bar-row">
+              <span class="waste-bar-label" style="font-size:11px">TokenLess</span>
+              <div class="waste-bar-track"><div class="waste-bar-fill waste-bar-fill--good" data-target="12"></div></div>
+              <span class="waste-bar-val">12%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="context-right">
+        <div class="context-card reveal">
+          <p class="t-overline">
+            <span data-lang="en" class="lang-active">Who</span>
+            <span data-lang="zh">目标用户</span>
+          </p>
+          <p class="t-card-title" style="margin-bottom:8px;">
+            <span data-lang="en" class="lang-active">Vibe Coding Developers</span>
+            <span data-lang="zh">Vibe Coding 开发者</span>
+          </p>
+          <p class="t-body">
+            <span data-lang="en" class="lang-active">Software developers using AI coding tools — Cursor, GitHub Copilot, Claude — who describe what they want in plain language and let AI write the code.</span>
+            <span data-lang="zh">使用 Cursor、GitHub Copilot、Claude 等 AI 编程工具的开发者，习惯用自然语言描述需求，让 AI 直接生成代码。</span>
+          </p>
+        </div>
+        <div class="context-card reveal" style="transition-delay:0.08s">
+          <p class="t-overline">
+            <span data-lang="en" class="lang-active">Workflow Improved</span>
+            <span data-lang="zh">优化的工作流</span>
+          </p>
+          <p class="t-card-title" style="margin-bottom:8px;">
+            <span data-lang="en" class="lang-active">The Prompt Moment</span>
+            <span data-lang="zh">输入 Prompt 的关键时刻</span>
+          </p>
+          <p class="t-body">
+            <span data-lang="en" class="lang-active">The exact moment a developer types a request into a coding AI. This single input determines whether AI writes correct code on the first try — or requires multiple costly rounds.</span>
+            <span data-lang="zh">开发者向 AI 编程工具输入请求的那一刻。这个输入决定了 AI 能否一次生成正确代码，还是需要多轮昂贵修正。</span>
+          </p>
+        </div>
+        <div class="context-card reveal" style="transition-delay:0.16s">
+          <p class="t-overline">
+            <span data-lang="en" class="lang-active">Why GenAI Is Necessary</span>
+            <span data-lang="zh">为什么必须用 GenAI</span>
+          </p>
+          <p class="t-card-title" style="margin-bottom:8px;">
+            <span data-lang="en" class="lang-active">Rules Can't Understand Intent</span>
+            <span data-lang="zh">规则引擎无法理解意图</span>
+          </p>
+          <p class="t-body">
+            <span data-lang="en" class="lang-active">A rule engine can strip filler words, but cannot determine which context is semantically relevant, what constraints a framework choice implies, or whether a sentence is redundant given the overall goal.</span>
+            <span data-lang="zh">规则引擎能删除填充词，但无法判断哪些上下文语义相关、框架选择隐含哪些约束，或某句话在整体目标下是否冗余。</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 3: SOLUTION ═══════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header section-header--center">
+      <p class="t-overline reveal">
+        <span data-lang="en" class="lang-active">02 — Solution &amp; Design</span>
+        <span data-lang="zh">02 — 解决方案与设计</span>
+      </p>
+      <h2 class="t-section reveal" style="margin-top:12px;margin-bottom:16px;transition-delay:0.1s">
+        <span data-lang="en" class="lang-active">A four-layer AI pipeline.</span>
+        <span data-lang="zh">四层 AI 流水线架构。</span>
+      </h2>
+      <p class="t-body-lg reveal" style="transition-delay:0.18s">
+        <span data-lang="en" class="lang-active">A 5-10 turn mentor conversation collects requirements, then feeds structured intent through four specialized AI layers.</span>
+        <span data-lang="zh">5-10 轮 Mentor 对话收集需求，再将结构化意图送入四个专业 AI 层逐层处理。</span>
+      </p>
+    </div>
+
+    <!-- Pipeline -->
+    <div class="reveal" style="transition-delay:0.1s">
+      <div class="pipeline-wrapper">
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <div class="pipeline-step__num">Layer 01</div>
+            <div class="pipeline-step__title"><span data-lang="en" class="lang-active">Planning</span><span data-lang="zh">规划层</span></div>
+            <div class="pipeline-step__modules">SceneDetector<br>IntentAnalyzer<br>GapAnalyzer</div>
+            <span class="pipeline-step__model">Gemma-4-E4B (local)</span>
+            <div class="pipeline-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 2l4 4-4 4" stroke="#0071e3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-step__num">Layer 02</div>
+            <div class="pipeline-step__title"><span data-lang="en" class="lang-active">Optimization</span><span data-lang="zh">优化层</span></div>
+            <div class="pipeline-step__modules">WordPruner<br>PositionalAnchorer<br>SemanticPruner<br>ProfessionalRewriter</div>
+            <span class="pipeline-step__model">Gemma-4-E4B (local)</span>
+            <div class="pipeline-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 2l4 4-4 4" stroke="#0071e3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-step__num">Layer 03</div>
+            <div class="pipeline-step__title"><span data-lang="en" class="lang-active">Pairwise Battle</span><span data-lang="zh">对比评审</span></div>
+            <div class="pipeline-step__modules">JudgePool<br>PairwiseBattle<br>(majority vote)</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;"><span class="pipeline-step__model">GPT-4o</span><span class="pipeline-step__model">Gemini 2.5</span></div>
+            <div class="pipeline-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 2l4 4-4 4" stroke="#0071e3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-step__num">Layer 04</div>
+            <div class="pipeline-step__title"><span data-lang="en" class="lang-active">Self-Correction</span><span data-lang="zh">自我修正</span></div>
+            <div class="pipeline-step__modules">SelfCorrector<br>(up to 2 retries)</div>
+            <span class="pipeline-step__model">Gemma-4-E4B (local)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Token flow animation -->
+    <div class="pipeline-token-anim reveal" style="transition-delay:0.2s">
+      <div class="token-gauge">
+        <div class="token-gauge__label">
+          <span data-lang="en" class="lang-active">Raw Prompt</span>
+          <span data-lang="zh">原始 Prompt</span>
+        </div>
+        <div class="token-gauge__ring">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(0,0,0,0.07)" stroke-width="8"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#dd5b00" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="264" id="ring-raw" stroke-linecap="round"/>
+          </svg>
+          <div class="token-gauge__ring-text">
+            <span class="token-gauge__val" style="color:var(--warning)" id="gauge-raw">24</span>
+            <span class="token-gauge__unit">tokens</span>
+          </div>
+        </div>
+        <div class="token-gauge__sub">
+          <span data-lang="en" class="lang-active">Ambiguous, unstructured</span>
+          <span data-lang="zh">模糊、无结构</span>
+        </div>
+      </div>
+      <div class="token-gauge">
+        <div class="token-gauge__label">
+          <span data-lang="en" class="lang-active">Optimized Output</span>
+          <span data-lang="zh">优化后输出</span>
+        </div>
+        <div class="token-gauge__ring">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(0,0,0,0.07)" stroke-width="8"/>
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#1aae39" stroke-width="8" stroke-dasharray="264" stroke-dashoffset="264" id="ring-opt" stroke-linecap="round"/>
+          </svg>
+          <div class="token-gauge__ring-text">
+            <span class="token-gauge__val" style="color:var(--success)" id="gauge-opt">183</span>
+            <span class="token-gauge__unit">tokens</span>
+          </div>
+        </div>
+        <div class="token-gauge__sub">
+          <span data-lang="en" class="lang-active">Structured, role-anchored</span>
+          <span data-lang="zh">结构化、角色锚定</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Model Selection -->
+    <div class="model-section reveal" style="transition-delay:0.28s">
+      <p class="t-overline" style="margin-bottom:16px;">
+        <span data-lang="en" class="lang-active">Local Model Selection</span>
+        <span data-lang="zh">本地模型选型</span>
+      </p>
+      <div class="model-table-wrap">
+        <table class="model-table">
+          <thead>
+            <tr>
+              <th><span data-lang="en" class="lang-active">Model</span><span data-lang="zh">模型</span></th>
+              <th><span data-lang="en" class="lang-active">Params</span><span data-lang="zh">参数量</span></th>
+              <th><span data-lang="en" class="lang-active">Latency</span><span data-lang="zh">延迟</span></th>
+              <th><span data-lang="en" class="lang-active">Structured Output</span><span data-lang="zh">结构化输出</span></th>
+              <th><span data-lang="en" class="lang-active">Decision</span><span data-lang="zh">决策</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="selected">
+              <td><strong class="t-mono">Gemma-4-E4B-IT</strong> ⭐</td>
+              <td class="mono">~4B</td>
+              <td><span class="badge badge--success" style="font-size:11px"><span data-lang="en" class="lang-active">Fast</span><span data-lang="zh">快</span></span></td>
+              <td><span class="badge badge--success" style="font-size:11px"><span data-lang="en" class="lang-active">Stable</span><span data-lang="zh">稳定</span></span></td>
+              <td><span class="badge badge--info" style="font-size:11px"><span data-lang="en" class="lang-active">Primary ✓</span><span data-lang="zh">主选 ✓</span></span></td>
+            </tr>
+            <tr>
+              <td class="mono">Qwen3.5-4B</td>
+              <td class="mono">~4B</td>
+              <td><span class="badge badge--warning" style="font-size:11px"><span data-lang="en" class="lang-active">~3× slower</span><span data-lang="zh">慢约3倍</span></span></td>
+              <td><span class="badge badge--success" style="font-size:11px"><span data-lang="en" class="lang-active">Stable</span><span data-lang="zh">稳定</span></span></td>
+              <td><span class="badge badge--neutral" style="font-size:11px"><span data-lang="en" class="lang-active">Backup</span><span data-lang="zh">备选</span></span></td>
+            </tr>
+            <tr>
+              <td class="mono">GPT-OSS-Nano</td>
+              <td class="mono">&lt;4B</td>
+              <td><span class="badge badge--success" style="font-size:11px"><span data-lang="en" class="lang-active">High throughput</span><span data-lang="zh">高吞吐</span></span></td>
+              <td><span class="badge badge--warning" style="font-size:11px"><span data-lang="en" class="lang-active">Inconsistent</span><span data-lang="zh">不稳定</span></span></td>
+              <td><span class="badge badge--neutral" style="font-size:11px"><span data-lang="en" class="lang-active">Conditional</span><span data-lang="zh">条件选用</span></span></td>
+            </tr>
+            <tr>
+              <td class="mono">GPT-4o</td>
+              <td class="mono">Cloud</td>
+              <td><span class="badge badge--success" style="font-size:11px"><span data-lang="en" class="lang-active">Fast</span><span data-lang="zh">快</span></span></td>
+              <td><span class="badge badge--success" style="font-size:11px"><span data-lang="en" class="lang-active">Excellent</span><span data-lang="zh">优秀</span></span></td>
+              <td><span class="badge badge--info" style="font-size:11px"><span data-lang="en" class="lang-active">Judge only</span><span data-lang="zh">仅评审</span></span></td>
+            </tr>
+            <tr>
+              <td class="mono">Gemini 2.5 Flash</td>
+              <td class="mono">Cloud</td>
+              <td><span class="badge badge--success" style="font-size:11px"><span data-lang="en" class="lang-active">Fast</span><span data-lang="zh">快</span></span></td>
+              <td><span class="badge badge--success" style="font-size:11px"><span data-lang="en" class="lang-active">Excellent</span><span data-lang="zh">优秀</span></span></td>
+              <td><span class="badge badge--info" style="font-size:11px"><span data-lang="en" class="lang-active">Judge only</span><span data-lang="zh">仅评审</span></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pipeline desc -->
+    <div class="pipeline-desc">
+      <div class="card card--warm reveal">
+        <p class="t-card-title" style="margin-bottom:10px;"><span data-lang="en" class="lang-active">Mentor Conversation</span><span data-lang="zh">Mentor 对话机制</span></p>
+        <p class="t-body"><span data-lang="en" class="lang-active">Before optimization, a 5-10 turn chat collects language, framework, I/O format, constraints, and edge cases — one question at a time. The pipeline only runs after the developer confirms.</span><span data-lang="zh">优化前，系统通过 5-10 轮对话逐一收集语言、框架、I/O 格式、约束条件和边界情况，开发者确认后流水线才启动。</span></p>
+      </div>
+      <div class="card card--warm reveal" style="transition-delay:0.1s">
+        <p class="t-card-title" style="margin-bottom:10px;"><span data-lang="en" class="lang-active">Human-in-the-Loop</span><span data-lang="zh">人在回路设计</span></p>
+        <p class="t-body"><span data-lang="en" class="lang-active">TokenLess surfaces quality scores and refuses to output prompts that fail the quality gate (overall &lt; 6.0). Low scores and edge cases are handed back to the developer explicitly.</span><span data-lang="zh">TokenLess 展示质量评分，拒绝输出未通过门槛（综合分 &lt; 6.0）的 prompt。低分和边界情况明确交还给开发者判断。</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 4: EVALUATION ═══════════════ -->
+<section class="section section--cool">
+  <div class="container">
+    <div class="section-header">
+      <p class="t-overline reveal">
+        <span data-lang="en" class="lang-active">03 — Evaluation &amp; Results</span>
+        <span data-lang="zh">03 — 评估与结果</span>
+      </p>
+      <h2 class="t-section reveal" style="margin-top:12px;margin-bottom:16px;transition-delay:0.1s">
+        <span data-lang="en" class="lang-active">Measured by two independent LLM judges.</span>
+        <span data-lang="zh">由两个独立 LLM 裁判评分。</span>
+      </h2>
+    </div>
+
+    <div class="eval-layout">
+      <div>
+        <p class="t-label reveal" style="margin-bottom:16px;color:var(--text-secondary);">
+          <span data-lang="en" class="lang-active">Scoring Rubric</span>
+          <span data-lang="zh">评分维度</span>
+        </p>
+        <div class="rubric-list">
+          <div class="rubric-item reveal"><div class="rubric-item__pct">40%</div><div class="rubric-item__info"><p class="t-label"><span data-lang="en" class="lang-active">Intent Alignment</span><span data-lang="zh">意图对齐</span></p><p class="t-body" style="font-size:13px"><span data-lang="en" class="lang-active">Does the output address what the user actually asked?</span><span data-lang="zh">输出是否真正回应了用户的实际需求？</span></p></div></div>
+          <div class="rubric-item reveal" style="transition-delay:0.06s"><div class="rubric-item__pct">30%</div><div class="rubric-item__info"><p class="t-label"><span data-lang="en" class="lang-active">Logic Coherence</span><span data-lang="zh">逻辑连贯性</span></p><p class="t-body" style="font-size:13px"><span data-lang="en" class="lang-active">Is the reasoning chain complete and unambiguous?</span><span data-lang="zh">推理链是否完整且无歧义？</span></p></div></div>
+          <div class="rubric-item reveal" style="transition-delay:0.12s"><div class="rubric-item__pct">20%</div><div class="rubric-item__info"><p class="t-label"><span data-lang="en" class="lang-active">Conciseness Score</span><span data-lang="zh">简洁性评分</span></p><p class="t-body" style="font-size:13px"><span data-lang="en" class="lang-active">How free of redundancy is the prompt?</span><span data-lang="zh">Prompt 冗余程度如何？</span></p></div></div>
+          <div class="rubric-item reveal" style="transition-delay:0.18s"><div class="rubric-item__pct">10%</div><div class="rubric-item__info"><p class="t-label"><span data-lang="en" class="lang-active">Format Compliance</span><span data-lang="zh">格式规范性</span></p><p class="t-body" style="font-size:13px"><span data-lang="en" class="lang-active">Does the output follow the specified structure?</span><span data-lang="zh">输出是否遵循指定结构？</span></p></div></div>
+        </div>
+
+        <!-- Score bars for EB-01 -->
+        <div class="score-bars reveal" style="margin-top:28px;transition-delay:0.24s">
+          <p class="t-overline" style="margin-bottom:12px;"><span data-lang="en" class="lang-active">EB-01 Dimension Breakdown</span><span data-lang="zh">EB-01 各维度得分</span></p>
+          <div class="score-bar-row"><span class="score-bar-name"><span data-lang="en" class="lang-active">Intent Align.</span><span data-lang="zh">意图对齐</span></span><div class="score-bar-track"><div class="score-bar-fill" data-target="97" style="background:var(--success)"></div></div><span class="score-bar-val">9.7</span></div>
+          <div class="score-bar-row"><span class="score-bar-name"><span data-lang="en" class="lang-active">Logic</span><span data-lang="zh">逻辑连贯</span></span><div class="score-bar-track"><div class="score-bar-fill" data-target="95" style="background:var(--accent)"></div></div><span class="score-bar-val">9.5</span></div>
+          <div class="score-bar-row"><span class="score-bar-name"><span data-lang="en" class="lang-active">Conciseness</span><span data-lang="zh">简洁性</span></span><div class="score-bar-track"><div class="score-bar-fill" data-target="94" style="background:#f5a623"></div></div><span class="score-bar-val">9.4</span></div>
+          <div class="score-bar-row"><span class="score-bar-name"><span data-lang="en" class="lang-active">Format</span><span data-lang="zh">格式规范</span></span><div class="score-bar-track"><div class="score-bar-fill" data-target="98" style="background:var(--success)"></div></div><span class="score-bar-val">9.8</span></div>
+        </div>
+      </div>
+
+      <div>
+        <p class="t-label reveal" style="margin-bottom:16px;color:var(--text-secondary);">
+          <span data-lang="en" class="lang-active">Test Cases</span>
+          <span data-lang="zh">测试用例</span>
+        </p>
+        <table class="eval-table reveal">
+          <thead>
+            <tr>
+              <th><span data-lang="en" class="lang-active">Case</span><span data-lang="zh">用例</span></th>
+              <th><span data-lang="en" class="lang-active">Raw Tokens</span><span data-lang="zh">原始 Token</span></th>
+              <th><span data-lang="en" class="lang-active">Score</span><span data-lang="zh">评分</span></th>
+              <th><span data-lang="en" class="lang-active">Verdict</span><span data-lang="zh">结论</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="font-weight:500;font-size:13px">EB-01</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">React dashboard + alerts</div></td>
+              <td style="font-family:var(--font-mono)">24</td>
+              <td class="score" style="color:var(--success)">9.55</td>
+              <td><span class="badge badge--success"><span data-lang="en" class="lang-active">Pass</span><span data-lang="zh">通过</span></span></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;font-size:13px">EB-02</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">"Write a function"</div></td>
+              <td style="font-family:var(--font-mono)">3</td>
+              <td class="score" style="color:var(--warning)">2.20</td>
+              <td><span class="badge badge--warning"><span data-lang="en" class="lang-active">Blocked</span><span data-lang="zh">质量门拦截</span></span></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;font-size:13px">EB-03</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">Todo API + auth (vague)</div></td>
+              <td style="font-family:var(--font-mono)">18</td>
+              <td class="score">7.20</td>
+              <td><span class="badge badge--success"><span data-lang="en" class="lang-active">Pass ×2 retry</span><span data-lang="zh">通过（2次自修正）</span></span></td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;font-size:13px">WP-01–04</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">Redundant prompts (unit)</div></td>
+              <td style="font-family:var(--font-mono)">30–65</td>
+              <td class="score">—</td>
+              <td><span class="badge badge--info"><span data-lang="en" class="lang-active">32–50% compression</span><span data-lang="zh">压缩 32–50%</span></span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="eval-baseline reveal" style="transition-delay:0.1s">
+          <p class="t-label" style="margin-bottom:6px;"><span data-lang="en" class="lang-active">Baseline Comparison</span><span data-lang="zh">基准对比方法</span></p>
+          <p class="t-body" style="font-size:14px"><span data-lang="en" class="lang-active">Baseline: raw prompt sent directly to Gemini 2.5 Flash, evaluated against the same rubric. Secondary: single-pass GPT-4o rewrite with no structured planning or pairwise evaluation.</span><span data-lang="zh">基准线：将原始 prompt 直接发给 Gemini 2.5 Flash，用相同评分标准评估。次级基准：仅让 GPT-4o 做单轮改写，不经结构化规划和对比评审。</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SECTION 5: SNAPSHOT ═══════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header section-header--center">
+      <p class="t-overline reveal">
+        <span data-lang="en" class="lang-active">04 — Artifact Snapshot</span>
+        <span data-lang="zh">04 — 成果展示</span>
+      </p>
+      <h2 class="t-section reveal" style="margin-top:12px;margin-bottom:16px;transition-delay:0.1s">
+        <span data-lang="en" class="lang-active">The real app, animated.</span>
+        <span data-lang="zh">真实应用界面，动态演示。</span>
+      </h2>
+      <p class="t-body-lg reveal" style="transition-delay:0.18s">
+        <span data-lang="en" class="lang-active">A pixel-faithful replica of the TokenLess Streamlit interface — sidebar, chat, metrics, final prompt, and quality summary — all animated in sequence.</span>
+        <span data-lang="zh">像素级还原 TokenLess Streamlit 界面——侧边栏、对话、指标卡、最终 prompt 和质量摘要——按真实顺序动态呈现。</span>
+      </p>
+    </div>
+
+    <!-- Replay button -->
+    <div class="reveal" style="text-align:center;margin-bottom:24px;transition-delay:0.22s">
+      <button class="btn btn--secondary" onclick="replayChat()" style="font-size:14px;padding:8px 20px;">
+        ↺ <span data-lang="en" class="lang-active">Replay Animation</span><span data-lang="zh">重播动画</span>
+      </button>
+    </div>
+
+    <!-- Streamlit faithful replica -->
+    <div class="reveal" style="transition-delay:0.28s">
+      <div class="st-app-shell">
+
+        <!-- ── macOS Titlebar (spans full width) ── -->
+        <div class="st-titlebar">
+          <div class="st-titlebar-dots">
+            <div class="st-titlebar-dot" style="background:#ff5f57"></div>
+            <div class="st-titlebar-dot" style="background:#febc2e"></div>
+            <div class="st-titlebar-dot" style="background:#28c840"></div>
+          </div>
+          <span class="st-titlebar-title">localhost:8501 — TokenLess</span>
+        </div>
+
+        <!-- ── Sidebar ── -->
+        <div class="st-sidebar">
+          <div class="st-sidebar-logo">TokenLess</div>
+
+          <!-- LM Studio status -->
+          <div class="st-alert st-alert--success" id="st-lm-badge">
+            <span>✓</span>
+            <div>
+              <div style="font-weight:600;margin-bottom:2px">
+                <span data-lang="en" class="lang-active">LM Studio connected</span>
+                <span data-lang="zh">LM Studio 已连接</span>
+              </div>
+              <code>gemma-4-e4b-it</code>
+            </div>
+          </div>
+
+          <!-- Demo mode checkbox -->
+          <div class="st-checkbox">
+            <div class="st-checkbox-box"></div>
+            <span data-lang="en" class="lang-active">Demo mode</span>
+            <span data-lang="zh">演示模式</span>
+          </div>
+
+          <!-- New chat button -->
+          <div class="st-btn">
+            <span data-lang="en" class="lang-active">New chat</span>
+            <span data-lang="zh">新建对话</span>
+          </div>
+
+          <div class="st-divider"></div>
+
+          <div class="st-caption">
+            <span data-lang="en" class="lang-active">Runtime</span>
+            <span data-lang="zh">运行时</span>
+          </div>
+          <div class="st-sidebar-text">
+            <span data-lang="en" class="lang-active">Local model:</span>
+            <span data-lang="zh">本地模型：</span>
+            <code>http://localhost:1234/v1</code>
+          </div>
+          <div class="st-sidebar-text">OPENAI_API_KEY: <code>set</code></div>
+          <div class="st-sidebar-text">GOOGLE_API_KEY: <code>set</code></div>
+        </div>
+
+        <!-- ── Main area ── -->
+        <div class="st-main">
+          <!-- Scrollable content -->
+          <div class="st-content" id="stContent">
+
+            <!-- Page header -->
+            <div class="st-page-header">
+              <div class="st-kicker">Vibe Coding Prompt Mentor</div>
+              <div class="st-h1">TokenLess</div>
+              <p class="st-subtitle">
+                <span data-lang="en" class="lang-active">Turn vague coding ideas into a high-quality prompt, ready for any AI model.</span>
+                <span data-lang="zh">将模糊的编程想法转化为高质量 prompt，适用于任何 AI 模型。</span>
+              </p>
+            </div>
+
+            <!-- Chat history area -->
+            <div class="st-chat-area" id="stChatArea"></div>
+
+            <!-- Pipeline status pills (appear after confirm) -->
+            <div class="st-pipeline-status" id="stPipelineStatus" style="display:none"></div>
+
+            <!-- Results area (appears after pipeline) -->
+            <div id="stResults" style="display:none">
+              <div class="st-rule"></div>
+
+              <!-- Token Estimate -->
+              <div class="st-subheader">
+                <span data-lang="en" class="lang-active">Token Estimate</span>
+                <span data-lang="zh">Token 估算</span>
+              </div>
+              <p class="st-muted-desc">
+                <span data-lang="en" class="lang-active">Before vs. after optimization — a structured prompt costs more tokens up front, but eliminates wasteful back-and-forth iterations.</span>
+                <span data-lang="zh">优化前后对比——结构化 prompt 前期多用 token，但彻底消除了低效的多轮修正。</span>
+              </p>
+
+              <!-- Savings highlight banner -->
+              <div class="st-savings-banner">
+                <div>
+                  <div style="font:700 13px/1.25 var(--font-body);color:#0d7a2e;margin-bottom:4px;">
+                    <span data-lang="en" class="lang-active">💡 Per-run cost drops by ~72% after the first use</span>
+                    <span data-lang="zh">💡 首次生成后，每次运行成本降低约 72%</span>
+                  </div>
+                  <div style="font:400 12px/1.4 var(--font-body);color:#1a7a2e;">
+                    <span data-lang="en" class="lang-active">Vague prompt requires ~3.4× more total tokens per run (re-clarifications, retries)</span>
+                    <span data-lang="zh">模糊 prompt 每次运行需要多约 3.4× token（多轮追问、重试）</span>
+                  </div>
+                </div>
+                <div style="text-align:right;flex-shrink:0;margin-left:16px;">
+                  <div class="st-savings-num">−74%</div>
+                  <div class="st-savings-badge">
+                    <span data-lang="en" class="lang-active">token saved</span>
+                    <span data-lang="zh">节省 token</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comparison table -->
+              <div class="st-token-compare">
+                <div class="st-token-compare-head">
+                  <div><span data-lang="en" class="lang-active">Metric</span><span data-lang="zh">指标</span></div>
+                  <div><span data-lang="en" class="lang-active">Before (Vague)</span><span data-lang="zh">优化前（模糊）</span></div>
+                  <div><span data-lang="en" class="lang-active">After (Optimized)</span><span data-lang="zh">优化后（结构化）</span></div>
+                </div>
+                <div class="st-token-compare-row">
+                  <div class="label"><span data-lang="en" class="lang-active">Prompt input tokens</span><span data-lang="zh">Prompt 输入 token</span></div>
+                  <div class="before">47</div>
+                  <div class="after">183</div>
+                </div>
+                <div class="st-token-compare-row">
+                  <div class="label"><span data-lang="en" class="lang-active">Est. reasoning tokens</span><span data-lang="zh">预计推理 token</span></div>
+                  <div class="before">~1,480</div>
+                  <div class="after">~420</div>
+                </div>
+                <div class="st-token-compare-row">
+                  <div class="label"><span data-lang="en" class="lang-active">Est. answer tokens</span><span data-lang="zh">预计回复 token</span></div>
+                  <div class="before">~1,200</div>
+                  <div class="after">~360</div>
+                </div>
+                <div class="st-token-compare-row" style="background:rgba(0,113,227,0.04);font-weight:700;">
+                  <div class="label" style="font-weight:700;color:var(--text-primary)"><span data-lang="en" class="lang-active">Est. total per run</span><span data-lang="zh">每次运行预计总计</span></div>
+                  <div class="before" style="color:#c0392b;font-weight:700;">~2,727</div>
+                  <div class="after highlight">~963</div>
+                </div>
+                <div class="st-token-compare-row">
+                  <div class="label"><span data-lang="en" class="lang-active">Quality score</span><span data-lang="zh">质量评分</span></div>
+                  <div class="before" style="color:#c0392b;">4.2 / 10</div>
+                  <div class="after" style="color:#0d7a2e;font-weight:700;">9.55 / 10</div>
+                </div>
+              </div>
+
+              <!-- Final Prompt -->
+              <div class="st-subheader" style="margin-top:8px">
+                <span data-lang="en" class="lang-active">Final Prompt</span>
+                <span data-lang="zh">最终 Prompt</span>
+              </div>
+              <p class="st-muted-desc">
+                <span data-lang="en" class="lang-active">This is the optimized prompt you can send directly to your target AI coding model.</span>
+                <span data-lang="zh">这是经过优化的 prompt，可直接发送给目标 AI 编程模型。</span>
+              </p>
+              <div class="st-copy-shell">
+                <div class="st-copy-bar">
+                  <span class="st-copy-label">
+                    <span data-lang="en" class="lang-active">Optimized prompt</span>
+                    <span data-lang="zh">优化后的 prompt</span>
+                  </span>
+                  <button class="st-copy-btn" id="stCopyBtn">
+                    <span data-lang="en" class="lang-active">Copy</span><span data-lang="zh">复制</span>
+                  </button>
+                </div>
+                <pre class="st-pre">## Role
+You are a senior React/TypeScript developer. Your expertise: real-time data dashboards and financial UI components.
+
+## Task
+Build a real-time stock price dashboard with Recharts visualization and price-movement alerts.
+
+## Context
+- Framework: React 18 + TypeScript
+- Charting: Recharts
+- Data source: WebSocket connection to a stock price API (endpoint TBD)
+- Alert threshold: ±5% price movement triggers an in-app notification
+
+## Constraints
+- No user authentication required
+- Use functional components and React hooks only
+- Handle WebSocket reconnection gracefully
+
+## Output Format
+Return the answer using this JSON-compatible structure:
+
+```json
+{
+  "files_to_create_or_modify": [],
+  "implementation_steps": [],
+  "acceptance_criteria": [],
+  "tests": []
+}
+```
+
+## Reminder
+Implement the WebSocket connection and alert logic first; the chart component is secondary.</pre>
+              </div>
+
+              <!-- Quality Summary expander -->
+              <div class="st-subheader">
+                <span data-lang="en" class="lang-active">Quality Summary</span>
+                <span data-lang="zh">质量摘要</span>
+              </div>
+              <div class="st-expander" id="stExpander">
+                <div class="st-expander-header" onclick="toggleExpander()">
+                  <span class="st-expander-title">
+                    <span data-lang="en" class="lang-active">More quality notes</span>
+                    <span data-lang="zh">更多质量说明</span>
+                  </span>
+                  <span class="st-expander-chevron">▼</span>
+                </div>
+                <div class="st-expander-body">
+                  <p><strong><span data-lang="en" class="lang-active">Understood task:</span><span data-lang="zh">理解的任务：</span></strong> <span data-lang="en" class="lang-active">Build a real-time stock dashboard in React and TypeScript.</span><span data-lang="zh">用 React 和 TypeScript 构建实时股票仪表盘。</span></p>
+                  <p><strong><span data-lang="en" class="lang-active">Supplementary info included:</span><span data-lang="zh">补充信息：</span></strong></p>
+                  <ul>
+                    <li>language: TypeScript</li>
+                    <li>framework: React 18</li>
+                    <li>charting: Recharts</li>
+                    <li>data_source: WebSocket API, endpoint TBD</li>
+                    <li>auth: No authentication needed</li>
+                    <li>testing: <span data-lang="en" class="lang-active">First version can include acceptance checks before full tests</span><span data-lang="zh">首版可在完整测试前加入验收检查</span></li>
+                  </ul>
+                  <p><strong><span data-lang="en" class="lang-active">Optimization actions:</span><span data-lang="zh">优化操作：</span></strong> intent extraction, missing-field clarification, positional anchoring, professional prompt rewrite, Markdown + JSON output structure</p>
+                </div>
+              </div>
+              <div style="height:24px"></div>
+            </div>
+          </div><!-- /st-content -->
+
+          <!-- Bottom chat input -->
+          <div class="st-chat-input-bar">
+            <div class="st-chat-input-mock">
+              <span data-lang="en" class="lang-active">Describe your project, or continue answering TokenLess questions</span>
+              <span data-lang="zh">描述你的项目，或继续回答 TokenLess 的问题</span>
+            </div>
+            <div class="st-send-btn">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+        </div><!-- /st-main -->
+
+      </div><!-- /st-app-shell -->
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__brand">TokenLess</div>
+    <div class="footer__divider"></div>
+    <div class="footer__meta">
+      <span data-lang="en" class="lang-active">Developed by Jiayi Zhuo (Corey) · JHU ISAI · Generative AI · Spring 2026<br>Final Project Presentation — Lightning Talk</span>
+      <span data-lang="zh">卓嘉毅（Corey）开发 · 约翰霍普金斯大学 ISAI · 生成式AI课程 · 2026 春季<br>期末项目演示 — 闪电演讲</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+/* ── Language switcher ── */
+var currentLang = 'en';
+function setLang(lang) {
+  if (lang === currentLang) return;
+  currentLang = lang;
+  document.querySelectorAll('[data-lang]').forEach(function(el) {
+    el.classList.toggle('lang-active', el.getAttribute('data-lang') === lang);
+  });
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+  document.getElementById('btn-en').setAttribute('aria-pressed', lang === 'en');
+  document.getElementById('btn-zh').setAttribute('aria-pressed', lang === 'zh');
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+}
+
+/* ── Scroll reveal ── */
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('in-view');
+      revealObserver.unobserve(e.target);
+      // Trigger section-specific animations
+      var id = e.target.id || '';
+      if (e.target.classList.contains('waste-chart') || e.target.id === 'wasteChart') triggerWasteBars();
+      if (e.target.classList.contains('score-bars') || e.target.querySelector('.score-bar-fill')) triggerScoreBars(e.target);
+      if (e.target.classList.contains('pipeline-token-anim')) triggerRings();
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
+
+/* ── Counter animation ── */
+function animateCount(el, target, decimals, suffix, duration) {
+  var start = 0, startTime = null;
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    var p = Math.min((ts - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - p, 3);
+    var val = start + (target - start) * ease;
+    el.textContent = decimals > 0 ? val.toFixed(decimals) : Math.round(val) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ── Waste bars ── */
+var wasteDone = false;
+function triggerWasteBars() {
+  if (wasteDone) return; wasteDone = true;
+  document.querySelectorAll('.waste-bar-fill').forEach(function(bar) {
+    var t = parseInt(bar.getAttribute('data-target'));
+    setTimeout(function() { bar.style.width = t + '%'; }, 300);
+  });
+}
+
+/* ── Score bars ── */
+function triggerScoreBars(container) {
+  var bars = (container || document).querySelectorAll('.score-bar-fill');
+  bars.forEach(function(bar) {
+    var t = parseInt(bar.getAttribute('data-target'));
+    setTimeout(function() { bar.style.width = t + '%'; }, 400);
+  });
+}
+
+/* ── Ring gauges ── */
+var ringsDone = false;
+function triggerRings() {
+  if (ringsDone) return; ringsDone = true;
+  var circumference = 2 * Math.PI * 42; // 263.9
+  // raw ring: 24/200 tokens = ~12%
+  var rawPct = 0.12;
+  var optPct = 0.69;
+  setTimeout(function() {
+    var rawRing = document.getElementById('ring-raw');
+    var optRing = document.getElementById('ring-opt');
+    if (rawRing) rawRing.style.strokeDashoffset = circumference * (1 - rawPct);
+    if (optRing) optRing.style.strokeDashoffset = circumference * (1 - optPct);
+    rawRing && (rawRing.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.16,1,0.3,1)');
+    optRing && (optRing.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0.16,1,0.3,1)');
+  }, 200);
+}
+
+/* ── Hero animated prompt flow ── */
+var heroMessages = [
+  { side:'user', text: 'I want to build a React dashboard showing real-time stock prices with alerts.' },
+  { side:'ai',   text: '⚡ Analyzing your request...\nWhat frontend framework version? (React 17 / 18)' },
+  { side:'user', text: 'React 18, TypeScript.' },
+  { side:'ai',   text: 'Got it. Which charting library? (Recharts / Chart.js / D3)' },
+  { side:'user', text: 'Recharts.' },
+  { side:'ai',   text: '✅ Requirements collected. Running optimization pipeline...' },
+];
+var heroEl = document.getElementById('heroFlow');
+function buildHeroFlow() {
+  heroEl.innerHTML = '';
+  heroMessages.forEach(function(m, i) {
+    var div = document.createElement('div');
+    div.className = 'flow-line flow-line--' + m.side;
+    div.innerHTML = '<div class="flow-line__avatar flow-line__avatar--' + m.side + '">' + (m.side==='user'?'D':'TL') + '</div>' +
+      '<div class="flow-line__text">' + m.text.replace(/\n/g,'<br>') + '</div>';
+    heroEl.appendChild(div);
+    setTimeout(function() { div.classList.add('visible'); }, 600 + i * 700);
+  });
+}
+buildHeroFlow();
+
+/* Trigger counters when hero is visible */
+var heroObserver = new IntersectionObserver(function(entries) {
+  if (entries[0].isIntersecting) {
+    var scoreEl = document.getElementById('count-score');
+    var compEl  = document.getElementById('count-compress');
+    if (scoreEl) animateCount(scoreEl, 9.55, 2, '', 1800);
+    if (compEl)  animateCount(compEl,  50,   0, '%', 1600);
+    heroObserver.disconnect();
+  }
+}, { threshold: 0.3 });
+heroObserver.observe(document.querySelector('.hero'));
+
+/* ── Streamlit replica chat animation ── */
+/* Chat script — mirrors build_artifact_demo_state() messages in app.py */
+var stChatScript = [
+  { delay:600,  role:'ai',   en:"Hi, I am TokenLess. Tell me what project you want an AI coding model to help you build. I will ask focused questions like a prompt mentor.", zh:"你好，我是 TokenLess。请告诉我你想让 AI 编程模型帮你构建什么项目。我会像 prompt 导师一样提出针对性问题。" },
+  { delay:2000, role:'user', en:"I want to build a React dashboard that shows real-time stock prices, includes charts, and sends an alert when a stock moves more than 5%.", zh:"我想做一个 React 仪表盘，展示实时股票价格、包含图表，并在股票波动超过 5% 时发送警报。" },
+  { delay:3400, role:'typing' },
+  { delay:4800, role:'ai',   en:"I understand the project as: a real-time stock dashboard.\n\nTo make the prompt executable, I need to clarify a few details. What React version and language — React 17 or 18, TypeScript or plain JavaScript?", zh:"我理解这是一个实时股票仪表盘项目。\n\n为了让 prompt 可执行，我需要确认几个细节。React 版本和语言——React 17 还是 18，TypeScript 还是纯 JavaScript？" },
+  { delay:6200, role:'user', en:"React 18 with TypeScript.", zh:"React 18，TypeScript。" },
+  { delay:7400, role:'typing' },
+  { delay:8400, role:'ai',   en:"Charting library — Recharts, Chart.js, D3, or another?", zh:"图表库——Recharts、Chart.js、D3 还是其他？" },
+  { delay:9600, role:'user', en:"Recharts.", zh:"Recharts。" },
+  { delay:10600,role:'typing' },
+  { delay:11400,role:'ai',   en:"Data source for stock prices — a real WebSocket API, or a mock for demo purposes?", zh:"股票价格数据来源——真实 WebSocket API，还是用于演示的模拟数据？" },
+  { delay:12800,role:'user', en:"Use React 18 with TypeScript and Recharts. Data comes from a WebSocket API. No authentication is needed; tests can be optional for the first version.", zh:"用 React 18 + TypeScript 和 Recharts。数据来自 WebSocket API，无需认证，测试在首版中可选。" },
+  { delay:14200,role:'typing' },
+  { delay:15400,role:'ai',   en:"Done. The optimized prompt below is structured for a coding model and was selected over the raw baseline by the evaluator.", zh:"完成。以下优化后的 prompt 已为编程模型结构化，并被评估器选定为优于原始基准版本。" },
+];
+
+/* Pipeline status messages */
+var stPipelineScript = [
+  { delay:15800, en:'⚙️ Layer 1: Planning · SceneDetector + IntentAnalyzer + GapAnalyzer', zh:'⚙️ 第一层：规划 · SceneDetector + IntentAnalyzer + GapAnalyzer', cls:'st-status-pill--info' },
+  { delay:17200, en:'⚙️ Layer 2: Optimization · WordPruner + SemanticPruner + ProfessionalRewriter', zh:'⚙️ 第二层：优化 · WordPruner + SemanticPruner + ProfessionalRewriter', cls:'st-status-pill--info' },
+  { delay:18800, en:'⚙️ Layer 3: Pairwise Battle · GPT-4o vs Gemini 2.5 Flash (dual-blind)', zh:'⚙️ 第三层：对比评审 · GPT-4o vs Gemini 2.5 Flash（双盲）', cls:'st-status-pill--info' },
+  { delay:20200, en:'✅ Layer 4: Self-Correction · Quality gate passed — 9.55/10', zh:'✅ 第四层：自修正 · 质量门已通过 — 9.55/10', cls:'st-status-pill--success' },
+];
+
+var stTimers = [];
+
+function clearStTimers() {
+  stTimers.forEach(clearTimeout);
+  stTimers = [];
+}
+
+function replayChat() {
+  clearStTimers();
+  // Reset DOM
+  document.getElementById('stChatArea').innerHTML = '';
+  document.getElementById('stPipelineStatus').innerHTML = '';
+  document.getElementById('stPipelineStatus').style.display = 'none';
+  document.getElementById('stResults').style.display = 'none';
+  runStChat();
+}
+
+function makeStMsg(role, enText, zhText) {
+  var div = document.createElement('div');
+  div.className = 'st-chat-msg' + (role === 'user' ? ' st-chat-msg--user' : '');
+  var avatarLabel = role === 'user' ? 'D' : 'TL';
+  var avatarCls   = role === 'user' ? 'st-avatar--user' : 'st-avatar--ai';
+  var avatarName  = role === 'user' ? 'Developer' : 'TokenLess';
+  var fmtEn = enText.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  var fmtZh = zhText.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  div.innerHTML =
+    '<div class="st-chat-msg-header">' +
+      '<div class="st-avatar ' + avatarCls + '">' + avatarLabel + '</div>' +
+      '<span class="st-avatar-name">' + avatarName + '</span>' +
+    '</div>' +
+    '<div class="st-msg-body">' +
+      '<span data-lang="en"' + (currentLang==='en'?' class="lang-active"':'') + '>' + fmtEn + '</span>' +
+      '<span data-lang="zh"' + (currentLang==='zh'?' class="lang-active"':'') + '>' + fmtZh + '</span>' +
+    '</div>';
+  return div;
+}
+
+function runStChat() {
+  var chatArea   = document.getElementById('stChatArea');
+  var pipeArea   = document.getElementById('stPipelineStatus');
+  var resultsEl  = document.getElementById('stResults');
+  var content    = document.getElementById('stContent');
+  var typingEl   = null;
+
+  /* Chat messages */
+  stChatScript.forEach(function(msg) {
+    var t = setTimeout(function() {
+      if (typingEl) { typingEl.remove(); typingEl = null; }
+
+      if (msg.role === 'typing') {
+        typingEl = document.createElement('div');
+        typingEl.className = 'st-chat-msg shown';
+        typingEl.innerHTML =
+          '<div class="st-chat-msg-header"><div class="st-avatar st-avatar--ai">TL</div><span class="st-avatar-name">TokenLess</span></div>' +
+          '<div class="typing"><span></span><span></span><span></span></div>';
+        chatArea.appendChild(typingEl);
+      } else {
+        var el = makeStMsg(msg.role, msg.en, msg.zh);
+        chatArea.appendChild(el);
+        requestAnimationFrame(function(){ el.classList.add('shown'); });
+      }
+      content.scrollTop = content.scrollHeight;
+    }, msg.delay);
+    stTimers.push(t);
+  });
+
+  /* Pipeline status pills */
+  stPipelineScript.forEach(function(step) {
+    var t = setTimeout(function() {
+      pipeArea.style.display = 'flex';
+      var pill = document.createElement('div');
+      pill.className = 'st-status-pill ' + step.cls;
+      pill.innerHTML =
+        '<span data-lang="en"' + (currentLang==='en'?' class="lang-active"':'') + '>' + step.en + '</span>' +
+        '<span data-lang="zh"' + (currentLang==='zh'?' class="lang-active"':'') + '>' + step.zh + '</span>';
+      pipeArea.appendChild(pill);
+      content.scrollTop = content.scrollHeight;
+    }, step.delay);
+    stTimers.push(t);
+  });
+
+  /* Show results */
+  var showResultsTimer = setTimeout(function() {
+    resultsEl.style.display = 'block';
+    requestAnimationFrame(function() {
+      resultsEl.style.opacity = '0';
+      resultsEl.style.transition = 'opacity 0.6s';
+      requestAnimationFrame(function() { resultsEl.style.opacity = '1'; });
+    });
+    setTimeout(function() { content.scrollTop = content.scrollHeight; }, 100);
+  }, 21800);
+  stTimers.push(showResultsTimer);
+}
+
+/* Copy button */
+document.addEventListener('DOMContentLoaded', function() {
+  var copyBtn = document.getElementById('stCopyBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function() {
+      var pre = copyBtn.closest('.st-copy-shell').querySelector('.st-pre');
+      if (navigator.clipboard && pre) {
+        navigator.clipboard.writeText(pre.textContent).then(function() {
+          var label = currentLang === 'zh' ? '已复制' : 'Copied';
+          copyBtn.innerHTML = label;
+          setTimeout(function() {
+            copyBtn.innerHTML = '<span data-lang="en" class="lang-active">Copy</span><span data-lang="zh">复制</span>';
+            setLang(currentLang);
+          }, 1400);
+        });
+      }
+    });
+  }
+});
+
+/* Expander toggle */
+function toggleExpander() {
+  var el = document.getElementById('stExpander');
+  if (el) el.classList.toggle('open');
+}
+
+/* Start animation when section scrolls into view */
+var stStarted = false;
+var stObserver = new IntersectionObserver(function(entries) {
+  if (entries[0].isIntersecting && !stStarted) {
+    stStarted = true;
+    runStChat();
+    stObserver.disconnect();
+  }
+}, { threshold: 0.1 });
+var stAppShell = document.querySelector('.st-app-shell');
+if (stAppShell) stObserver.observe(stAppShell);
+
+/* Init */
+document.addEventListener('DOMContentLoaded', function() {
+  setLang('en');
+  // Observe reveal elements for waste/score bars separately
+  document.querySelectorAll('.waste-chart').forEach(function(el) {
+    revealObserver.observe(el);
+  });
+  document.querySelectorAll('.score-bars').forEach(function(el) {
+    var obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) { triggerScoreBars(entries[0].target); obs.disconnect(); }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+  });
+  document.querySelectorAll('.pipeline-token-anim').forEach(function(el) {
+    var obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) { triggerRings(); obs.disconnect(); }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+  });
+});
+</script>
+</body>
+</html>

@@ -261,65 +261,13 @@ The system performs well on prompts with 20+ tokens that contain recoverable gap
 
 ## Artifact Snapshot
 
-This section satisfies the final-project artifact snapshot requirement through a concise sample input/output walkthrough. A standalone version is also available at [`artifacts/artifact_snapshot.md`](artifacts/artifact_snapshot.md), with the longer transcript and metrics in [`artifacts/sample_output.md`](artifacts/sample_output.md).
+### App (no input)
 
-### Input/Output Screenshot
+![App interface with no input](artifacts/app-screenshot.png)
 
-![TokenLess input and output artifact screenshot](artifacts/input-output-screenshot.png)
+### Input → Mentor → Optimized Output
 
-This is a real Streamlit app screenshot captured from a deterministic artifact-demo run. It shows the raw user input, the mentor clarification questions, and the optimized output prompt in one view. The metrics and baseline comparison are documented below and in the standalone artifact snapshot. A plain runnable-app screenshot is also included at [`artifacts/app-screenshot.png`](artifacts/app-screenshot.png).
-
-### Sample Input -> Output
-
-**User input (raw):**
-```
-I want to build a React dashboard that shows real-time stock prices, includes charts, and sends an alert when a stock moves more than 5%.
-```
-
-**After 5-turn Mentor conversation** (clarified: TypeScript, Recharts, WebSocket API, no auth needed, tests optional):
-
-**TokenLess output (optimized prompt):**
-```markdown
-## Role
-You are a senior React/TypeScript developer. Your expertise: real-time data dashboards, financial UI components.
-
-## Task
-Build a real-time stock price dashboard with chart visualization and price-movement alerts.
-
-## Context
-- Framework: React 18 + TypeScript
-- Charting: Recharts
-- Data source: WebSocket connection to a stock price API (endpoint TBD)
-- Alert threshold: plus or minus 5% price movement triggers an in-app notification
-
-## Constraints
-- No user authentication required
-- Use functional components and React hooks only
-- Handle WebSocket reconnection gracefully
-
-## Output Format
-Return the answer using this JSON-compatible structure:
-
-​```json
-{
-  "files_to_create_or_modify": [],
-  "implementation_steps": [],
-  "acceptance_criteria": [],
-  "tests": []
-}
-​```
-
-## Reminder
-Implement the WebSocket connection and alert logic first; the chart component is secondary.
-```
-
-**Result:** Token estimate before sending to target model - raw: 47 tokens -> structured: 183 tokens. Quality score: 9.55/10. Pipeline token cost: ~2,600 tokens (planning + optimization + dual-judge evaluation).
-
-### App Interface
-
-The Streamlit app (`streamlit run app.py`) opens to a chat interface. The user types a description, answers 5-10 follow-up questions from the Mentor, confirms, and the optimization pipeline runs automatically. The main result panel shows token estimates, quality score, and the final structured prompt with a one-click copy button. Advanced details (judge votes, token ledger, structure map) are hidden in an expandable section.
-
-For the standalone artifact snapshot, see [`artifacts/artifact_snapshot.md`](artifacts/artifact_snapshot.md). For a complete session transcript with metrics, see [`artifacts/sample_output.md`](artifacts/sample_output.md). To see the live app, follow the setup instructions above and run `streamlit run app.py`.
+![Full pipeline: raw input, mentor clarifications, and optimized prompt with quality score](artifacts/input-output-screenshot.png)
 
 ---
 
